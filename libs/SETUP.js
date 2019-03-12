@@ -2,6 +2,7 @@
 //これをコンソールタブに貼り付けて実行してください。
 //一度実行してからでないと、overrideはできません。
 //=============
+//SETUP
 if (document.getElementById('BOTSETUP') == null) {
   var SETUP = document.createElement('script');
   SETUP.src = 'https://thenyutheta.github.io/FBOT/libs/core.js';
@@ -15,7 +16,6 @@ if (document.getElementById('BOTSETUP') == null) {
 //=============
 document.getElementById('BOTSETUP').onload = function(){_CONFIG()};
 function _CONFIG() {
-  BOT_INIT();
 
   //configs
   TargetName = [''];
@@ -37,4 +37,6 @@ function _CONFIG() {
   SpamInterval = 5000;
   SpamTimeOut = 1800000;
   //=============
+
+  BOT_INIT();
 }

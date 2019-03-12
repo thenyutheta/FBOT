@@ -1,4 +1,4 @@
-//configs ダミー
+//configs (ダミー)
 var TargetName = [''];
 var TargetText = ['{regi}HEY BOT', '{dice}', '{reg}Hey.+Bot'];
 var BreakText = ['{regi}break bot'];
@@ -14,22 +14,31 @@ var SpamStart = ['{regi}hey spam'];
 var SpamEnd = ['{regi}stop spam'];
 var BotSpamStartText = ['Spamモードを開始します No.{count}'];
 var BotSpamEndText = ['Spamモードを終了します No.{count}'];
-var BotSpamText = ['SPAMするぜ卍 NO.{count}'];
+var BotSpamText = ['SPAMするぜ NO.{count}'];
 var SpamInterval = 5000;
 var SpamTimeOut = 1800000;
-
+//=======
+//not configs. don't edit.
 //POSTPHP URL
 var Target = './post_feed.php';
+var info = '[BOTINFO]';
 
-if (sender != null) { DestroySpam(); };
+//宣言
 var sender = null;
 var breaker = null;
-var counter = CounterStart;
+var counter = 0;
 var breaked = false;
-var info = '[BOTINFO]';
 
 //init
 function BOT_INIT() {
+  //timer reset
+  if (sender != null || breaker != null) { DestroySpam(); };
+  //変数　reset
+  sender = null;
+  breaker = null;
+  counter = CounterStart;
+  breaked = false;
+
   //Create Stop Botton
   if (document.getElementById('FBOT_STOP') == null) {
     var btn = document.createElement('button');
