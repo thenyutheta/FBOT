@@ -69,7 +69,7 @@ function LOAD_DATA(data) {
   //取得
   var list = getFeedArray(data.param);
   var PostName = list[0][3].replace(/<(.*?)>/g, "");
-  var PostContent = list[0][5].replace(/<(.*?)>/g, "");
+  var PostContent = list[0][5].replace(/<br.*?>/g, "\n").replace(/<(.*?)>/g, "");
   var PostId = list[0][0];
   //自分や、BOTには反応しない。
   if (PostName.indexOf(BotName) > -1 || PostContent.indexOf(info) > -1) { return; }
@@ -116,10 +116,11 @@ function LOAD_DATA(data) {
 //サイコロ
 function DICE(list) {
   var PostName = list[0][3].replace(/<(.*?)>/g, "");
-  var PostContent = list[0][5].replace(/<br.*?>/, "\n").replace(/<(.*?)>/g, "");
+  //diceの場合は改行をきる。
+  var PostContent = list[0][5].replace(/<(.*?)>/g, "");
   var PostId = list[0][0];
   //サイコロを呼び出しているか
-  var match = PostContent.match(/(\d{1,3})e(\d{1,3}(?!\d))/);
+  var match = PostContent.match(/(\d{1,3})e(\d{1,3}(?!\d))/i);
   if (match != null) {
     //個数
     var dicenum = parseInt(match[1]);

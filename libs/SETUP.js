@@ -5,7 +5,7 @@
 //SETUP
 if (document.getElementById('BOTSETUP') == null) {
   var SETUP = document.createElement('script');
-  SETUP.src = 'https://thenyutheta.github.io/FBOT/libs/core.js';
+  SETUP.src = 'https://thenyutheta.github.io/FBOT/libs/core.js?_='+Date.now();
   SETUP.id = 'BOTSETUP';
   document.body.appendChild(SETUP);
   $('#BOTSETUP').load();
