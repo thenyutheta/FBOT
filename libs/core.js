@@ -116,7 +116,7 @@ function LOAD_DATA(data) {
 //サイコロ
 function DICE(list) {
   var PostName = list[0][3].replace(/<(.*?)>/g, "");
-  var PostContent = list[0][5].replace(/<(.*?)>/g, "");
+  var PostContent = list[0][5].replace(/<br.*?>/, "\n").replace(/<(.*?)>/g, "");
   var PostId = list[0][0];
   //サイコロを呼び出しているか
   var match = PostContent.match(/(\d{1,3})e(\d{1,3}(?!\d))/);
@@ -190,9 +190,9 @@ function SearchTable(source, table) {
 function REG_SEARCH(source, pattern, flg) {
   var re = null;
   if (flg != null) {
-    re = new RegExp(pattern, flg);
+    re = new RegExp(pattern, flg + "s");
   } else {
-    re = new RegExp(pattern);
+    re = new RegExp(pattern, "s");
   }
   var m = source.match(re);
   if (m != null) {
