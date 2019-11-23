@@ -6,10 +6,12 @@ var BotName = 'BOT';
 var BotText = ['[{hit}]\nHello, {name}!\n>>{id}No.{count}'];
 var BotBreakText = ['終了コード:{hit}によって終了\n>>{id}No.{count}'];
 var PostWait = 1000;
+
 var IsSpPost = 0;
 var CounterStart = 0;
 var CountUp = 1;
 
+var SpamOnly = false;
 var SpamStart = ['{regi}hey spam'];
 var SpamEnd = ['{regi}stop spam'];
 var BotSpamStartText = ['Spamモードを開始します No.{count}'];
@@ -82,11 +84,13 @@ function LOAD_DATA(data) {
     return;
   }
   //SPAM END
-  var SPAMEND = SearchTable(PostContent, SpamEnd);
-  if (SPAMEND != null) {
-    DestroySpam();
-    setTimeout(POST_MAIN(info + '\n' + REPLACEDATA(GetText(BotSpamEndText), list, SPAMEND)), PostWait);
-    return;
+  if (sender != null) {
+    var SPAMEND = SearchTable(PostContent, SpamEnd);
+    if (SPAMEND != null) {
+      DestroySpam();
+      setTimeout(POST_MAIN(info + '\n' + REPLACEDATA(GetText(BotSpamEndText), list, SPAMEND)), PostWait);
+      return;
+    }
   }
   //SPAM START
   var SPAMSTART = SearchTable(PostContent, SpamStart);
@@ -99,17 +103,19 @@ function LOAD_DATA(data) {
     return;
   }
 
-  //dice判定
-  if (TargetText.indexOf('{dice}') > -1) {
-    //diceが正しければ帰る
-    if(DICE(list)){return;}
-  }
+  if (!SpamOnly) {
+    //dice判定
+    if (TargetText.indexOf('{dice}') > -1) {
+      //diceが正しければ帰る
+      if (DICE(list)) { return; }
+    }
 
-  //通常投稿判定
-  var HITTEXT = SearchTable(PostContent, TargetText);
-  if (SearchTable(PostName, TargetName) != null && HITTEXT != null) {
-    var BotComment = info + "\n" + REPLACEDATA(GetText(BotText), list, HITTEXT);
-    setTimeout(POST_MAIN(BotComment), PostWait);
+    //通常投稿判定
+    var HITTEXT = SearchTable(PostContent, TargetText);
+    if (SearchTable(PostName, TargetName) != null && HITTEXT != null) {
+      var BotComment = info + "\n" + REPLACEDATA(GetText(BotText), list, HITTEXT);
+      setTimeout(POST_MAIN(BotComment), PostWait);
+    }
   }
 }
 
@@ -233,5 +239,7 @@ function Destroy() {
 function DestroySpam() {
   clearInterval(sender);
   clearTimeout(breaker);
+  sender = null;
+  breaker = null;
   console.log('Spam was destroyed');
 }

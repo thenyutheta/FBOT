@@ -25,10 +25,12 @@ function _CONFIG() {
   BotText = ['[{hit}]\nHello, {name}!\n>>{id}No.{count}'];
   BotBreakText = ['終了コード:{hit}によって終了\n>>{id}No.{count}'];
   PostWait = 1000;
+
   IsSpPost = 0;
   CounterStart = 0;
   CountUp = 1;
 
+  SpamOnly = false;
   SpamStart = ['{regi}hey spam'];
   SpamEnd = ['{regi}stop spam'];
   BotSpamStartText = ['Spamモードを開始します No.{count}'];
