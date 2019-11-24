@@ -18,8 +18,10 @@ var BotSpamStartText = ['Spamモードを開始します No.{count}'];
 var BotSpamEndText = ['Spamモードを終了します No.{count}'];
 var BotSpamText = ['SPAMするぜ NO.{count}'];
 var SpamInterval = 5000;
+var SpamMaxCount = 100;
 var SpamTimeOut = 1800000;
 //=======
+
 //not configs. don't edit.
 //POSTPHP URL
 var Target = './post_feed.php';
@@ -29,6 +31,7 @@ var info = '[BOTINFO]';
 var sender = null;
 var breaker = null;
 var counter = 0;
+var spamcounter = 0;
 var breaked = false;
 
 //init
@@ -92,15 +95,19 @@ function LOAD_DATA(data) {
       return;
     }
   }
+
   //SPAM START
-  var SPAMSTART = SearchTable(PostContent, SpamStart);
-  if (SPAMSTART != null) {
-    //reset
-    DestroySpam();
-    setTimeout(POST_MAIN(info + '\n' + REPLACEDATA(GetText(BotSpamStartText), list, SPAMSTART)), PostWait);
-    sender = setInterval(function () { POST_MAIN(info + '\n' + GetText(BotSpamText)) }, SpamInterval);
-    breaker = setTimeout(DestroySpam, SpamTimeOut);
-    return;
+  if (sender == null) {
+    var SPAMSTART = SearchTable(PostContent, SpamStart);
+    if (SPAMSTART != null) {
+      //reset
+      spamcounter = 0;
+      DestroySpam();
+      setTimeout(SPAM_POST(info + '\n' + REPLACEDATA(GetText(BotSpamStartText), list, SPAMSTART)), PostWait);
+      sender = setInterval(function () { POST_MAIN(info + '\n' + GetText(BotSpamText)) }, SpamInterval);
+      breaker = setTimeout(DestroySpam, SpamTimeOut);
+      return;
+    }
   }
 
   if (!SpamOnly) {
@@ -214,10 +221,22 @@ function RandomInt(max) {
   return Math.floor(Math.random() * Math.floor(max));
 }
 
+//Spam時のクッション
+function SPAM_POST(BotComment){
+  if(spamcounter >= SpamMaxCount){
+    DestroySpam();
+    return;
+  }
+  spamcounter++;
+  BotComment = BotComment.replace("{spcount}", spamcounter);
+  POST_MAIN(BotComment);
+}
+
 //投稿
 function POST_MAIN(BotComment) {
   //終了していたら帰る
   if (breaked) { return; }
+  BotComment = API_POST_ARRANGE(BotComment);
   $.ajax({
     url: Target,
     type: 'POST',
@@ -226,6 +245,12 @@ function POST_MAIN(BotComment) {
   });
   //countを増やす。
   counter += CountUp;
+}
+
+//override用
+function API_POST_ARRANGE(str) {
+
+  return str;
 }
 
 //BOT 終了
@@ -237,6 +262,7 @@ function Destroy() {
 }
 //SPAM 終了
 function DestroySpam() {
+  if (sender == null) { return; }
   clearInterval(sender);
   clearTimeout(breaker);
   sender = null;

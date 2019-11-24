@@ -37,6 +37,7 @@ function _CONFIG() {
   BotSpamEndText = ['Spamモードを終了します No.{count}'];
   BotSpamText = ['SPAMするぜ NO.{count}'];
   SpamInterval = 5000;
+  SpamMaxCount = 100;
   SpamTimeOut = 1800000;
   //=============
 
