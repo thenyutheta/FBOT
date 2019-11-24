@@ -103,8 +103,8 @@ function LOAD_DATA(data) {
       //reset
       spamcounter = 0;
       DestroySpam();
-      setTimeout(SPAM_POST(info + '\n' + REPLACEDATA(GetText(BotSpamStartText), list, SPAMSTART)), PostWait);
-      sender = setInterval(function () { POST_MAIN(info + '\n' + GetText(BotSpamText)) }, SpamInterval);
+      setTimeout(POST_MAIN(info + '\n' + REPLACEDATA(GetText(BotSpamStartText), list, SPAMSTART)), PostWait);
+      sender = setInterval(function () { SPAM_POST(info + '\n' + GetText(BotSpamText)) }, SpamInterval);
       breaker = setTimeout(DestroySpam, SpamTimeOut);
       return;
     }
