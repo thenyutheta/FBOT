@@ -191,6 +191,11 @@ function SearchTable(source, table) {
     } else if (table[i].indexOf('{regi}') > -1) {
       result = REG_SEARCH(source, table[i].replace('{regi}', ''), 'i');
       if (result != null) { break; }
+    } else if (table[i].indexOf('{all}') > -1) {
+      if (source == table[i].replace('{all}', "")) {
+        result = source;
+        break;
+      }
     } else if (source.indexOf(table[i]) > -1) {
       //reg無し
       result = table[i];
@@ -222,8 +227,8 @@ function RandomInt(max) {
 }
 
 //Spam時のクッション
-function SPAM_POST(BotComment){
-  if(spamcounter >= SpamMaxCount && SpamMaxCount >= 0){
+function SPAM_POST(BotComment) {
+  if (spamcounter >= SpamMaxCount && SpamMaxCount >= 0) {
     DestroySpam();
     return;
   }
