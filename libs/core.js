@@ -223,7 +223,7 @@ function RandomInt(max) {
 
 //Spam時のクッション
 function SPAM_POST(BotComment){
-  if(spamcounter >= SpamMaxCount && SpamMaxCount < 0){
+  if(spamcounter >= SpamMaxCount && SpamMaxCount >= 0){
     DestroySpam();
     return;
   }
