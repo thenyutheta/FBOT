@@ -74,7 +74,11 @@ function LOAD_DATA(data) {
   //取得
   var list = getFeedArray(data.param);
   var PostName = list[0][3].replace(/<(.*?)>/g, "");
-  var PostContent = list[0][5].replace(/<br.*?>/g, "\n").replace(/<(.*?)>/g, "");
+  var PostContent = list[0][5];
+  //imgfix
+  PostContent = PostContent.replace(/<img\s*title\s*=\s*\"(\d+?)\".*?>/ig, "[P:$1]");
+  PostContent = PostContent.replace(/<br.*?>/g, "\n").replace(/<(.*?)>/g, "");
+  PostContent = UnEscapeHtml(PostContent);
   var PostId = list[0][0];
   //自分や、BOTには反応しない。
   if (PostName.indexOf(BotName) > -1 || PostContent.indexOf(info) > -1) { return; }
@@ -165,6 +169,23 @@ function DICE(list) {
     return false;
   }
 }
+
+function UnEscapeHtml(target) {
+  if (typeof target !== 'string') return target;
+
+  var patterns = {
+      '&lt;'   : '<',
+      '&gt;'   : '>',
+      '&amp;'  : '&',
+      '&quot;' : '"',
+      '&#x27;' : '\'',
+      '&#x60;' : '`'
+  };
+
+  return target.replace(/&(lt|gt|amp|quot|#x27|#x60);/g, function(match) {
+      return patterns[match];
+  });
+};
 
 //text tableからランダムに取得
 function GetText(table) {
