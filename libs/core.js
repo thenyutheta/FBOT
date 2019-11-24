@@ -65,20 +65,23 @@ function BOT_INIT() {
   console.log('Bot has started');
 }
 
+function BOT_DEBUG_DATA(data) {
+
+}
+
 //コールバックメイン
 function LOAD_DATA(data) {
   //終了していたら帰る
   if (breaked) { return; }
   //投稿以外なら帰る
   if (data.code != 3) { return; }
+  BOT_DEBUG_DATA(data);
   //取得
   var list = getFeedArray(data.param);
   var PostName = list[0][3].replace(/<(.*?)>/g, "");
   var PostContent = list[0][5];
-  //imgfix
-  PostContent = PostContent.replace(/<img\s*title\s*=\s*\"(\d+?)\".*?>/ig, "[P:$1]");
-  PostContent = PostContent.replace(/<br.*?>/g, "\n").replace(/<(.*?)>/g, "");
-  PostContent = UnEscapeHtml(PostContent);
+  //fix
+  PostContent = POST_CONTENT_FIX(PostContent);
   var PostId = list[0][0];
   //自分や、BOTには反応しない。
   if (PostName.indexOf(BotName) > -1 || PostContent.indexOf(info) > -1) { return; }
@@ -130,11 +133,19 @@ function LOAD_DATA(data) {
   }
 }
 
+function POST_CONTENT_FIX(data) {
+  data = data.replace(/<img\s*title\s*=\s*\"(\d+?)\".*?>/ig, "[P:$1]");
+  data = data.replace(/<br.*?>/g, "\n").replace(/<(.*?)>/g, "");
+  data = UnEscapeHtml(data);
+  return data;
+}
+
 //サイコロ
 function DICE(list) {
   var PostName = list[0][3].replace(/<(.*?)>/g, "");
   //diceの場合は改行をきる。
-  var PostContent = list[0][5].replace(/<(.*?)>/g, "");
+  var PostContent = list[0][5];
+  PostContent = POST_CONTENT_FIX(PostContent);
   var PostId = list[0][0];
   //サイコロを呼び出しているか
   var match = PostContent.match(/(\d{1,3})e(\d{1,3}(?!\d))/i);
@@ -174,16 +185,16 @@ function UnEscapeHtml(target) {
   if (typeof target !== 'string') return target;
 
   var patterns = {
-      '&lt;'   : '<',
-      '&gt;'   : '>',
-      '&amp;'  : '&',
-      '&quot;' : '"',
-      '&#x27;' : '\'',
-      '&#x60;' : '`'
+    '&lt;': '<',
+    '&gt;': '>',
+    '&amp;': '&',
+    '&quot;': '"',
+    '&#x27;': '\'',
+    '&#x60;': '`'
   };
 
-  return target.replace(/&(lt|gt|amp|quot|#x27|#x60);/g, function(match) {
-      return patterns[match];
+  return target.replace(/&(lt|gt|amp|quot|#x27|#x60);/g, function (match) {
+    return patterns[match];
   });
 };
 
@@ -195,9 +206,15 @@ function GetText(table) {
 //data置換
 function REPLACEDATA(source, list, HIT) {
   var PostName = list[0][3].replace(/<(.*?)>/g, "");
-  var PostContent = list[0][5].replace(/<(.*?)>/g, "");
+  var PostContent = list[0][5];
+  PostContent = POST_CONTENT_FIX(PostContent);
   var PostId = list[0][0];
-  return source.replace("{name}", PostName).replace("{content}", PostContent).replace("{id}", PostId).replace('{hit}', HIT)
+  var m = HIT.match(/\[P:(\d+)\]/);
+  var pid = "none";
+  if (m != null) {
+    pid = m[1];
+  }
+  return source.replace("{name}", PostName).replace("{content}", PostContent).replace("{id}", PostId).replace('{hit}', HIT).replace("{pid}", pid);
 }
 
 //一致したらテキストを返す
