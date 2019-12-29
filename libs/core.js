@@ -22,9 +22,31 @@ var SpamMaxCount = 100;
 var SpamTimeOut = 1800000;
 //=======
 
+var DEF_CONFIG_DATA = "TargetName = [''];\n" +
+  "TargetText = ['{regi}HEY BOT', '{dice}', '{reg}Hey.+Bot'];\n" +
+  "BreakText = ['{regi}break bot'];\n" +
+  "BotName = 'BOT';\n" +
+  "BotText = ['[{hit}]\\nHello, {name}!\\n>>{id}No.{count}'];\n" +
+  "BotBreakText = ['終了コード:{hit}によって終了\\n>>{id}No.{count}'];\n" +
+  "PostWait = 1000;\n" +
+  "\n" +
+  "IsSpPost = 0;\n" +
+  "CounterStart = 0;\n" +
+  "CountUp = 1;\n" +
+  "\n" +
+  "SpamOnly = false;\n" +
+  "SpamStart = ['{regi}hey spam'];\n" +
+  "SpamEnd = ['{regi}stop spam'];\n" +
+  "BotSpamStartText = ['Spamモードを開始します No.{count}'];\n" +
+  "BotSpamEndText = ['Spamモードを終了します No.{count}'];\n" +
+  "BotSpamText = ['SPAMするぜ NO.{count}'];\n" +
+  "SpamInterval = 5000;\n" +
+  "SpamMaxCount = 100;\n" +
+  "SpamTimeOut = 1800000;\n";
+
 //not configs. don't edit.
 //POSTPHP URL
-var Target = './post_feed.php';
+var Target = location.href.replace("sp/", "") + '/post_feed.php';
 var info = '[BOTINFO]';
 
 //宣言
@@ -33,6 +55,83 @@ var breaker = null;
 var counter = 0;
 var spamcounter = 0;
 var breaked = false;
+
+//Ez_Cfg_Area
+if (document.getElementById('FBOT_CONF') == null) {
+  var tex = document.createElement('textArea');
+  tex.id = 'FBOT_CONF';
+  tex.rows = 5;
+  tex.style = 'position:fixed;left:10px;bottom:35px;z-index:9;height:90px;width:85%;font-size:12px;'
+  document.body.appendChild(tex);
+}
+$('#FBOT_CONF').val(DEF_CONFIG_DATA);
+
+if (document.getElementById('FBOT_CONF_RESET') == null) {
+  var btn = document.createElement('button');
+  btn.textContent = 'CFG_RESET';
+  btn.id = 'FBOT_CONF_RESET';
+  btn.onclick = CFG_RESET;
+  btn.style = 'position:fixed;bottom:10px;left:230px;z-index:9;height:24px;width:99px'
+  document.body.appendChild(btn);
+}
+
+if (document.getElementById('FBOT_CTRL') == null) {
+  var btn = document.createElement('button');
+  btn.textContent = 'BOTを起動';
+  btn.id = 'FBOT_CTRL';
+  btn.onclick = BOT_CREATE;
+  btn.style = 'position:fixed;bottom:10px;left:10px;z-index:9;height:24px;width:99px'
+  document.body.appendChild(btn);
+}
+
+if (document.getElementById('FBOT_CFG_CTRL') == null) {
+  var btn = document.createElement('button');
+  btn.textContent = 'CFG表示切替';
+  btn.id = 'FBOT_CFG_CTRL';
+  btn.onclick = CFG_TOGGLE;
+  btn.style = 'position:fixed;bottom:10px;left:120px;z-index:9;height:24px;width:99px'
+  document.body.appendChild(btn);
+}
+
+if (document.getElementById('FBOT_AUDIO') == null) {
+  var aud = document.createElement('audio');
+  aud.id = 'FBOT_AUDIO';
+  aud.src = location.href.replace("sp/", "") + "sounds/s2.mp3";
+  aud.style = "display:none";
+  document.body.appendChild(aud);
+}
+
+if (document.getElementById('FBOT_START_EV') == null) {
+  var div = document.createElement('div');
+  div.id = 'FBOT_START_EV';
+  div.style = "display:none";
+  div.onclick = function () { };
+  document.body.appendChild(div);
+}
+//delete ad
+$("div[id*=nend_adspace]").remove();
+
+function CFG_TOGGLE() {
+  var cfg = document.getElementById('FBOT_CONF');
+  var cfgR = document.getElementById('FBOT_CONF_RESET');
+  if (cfg.style.display == "none") {
+    cfg.style.display = "";
+    cfgR.style.display = "";
+  } else {
+    cfg.style.display = "none";
+    cfgR.style.display = "none";
+  }
+}
+
+function CFG_RESET() {
+  $('#FBOT_CONF').val(DEF_CONFIG_DATA);
+}
+
+function BOT_CREATE() {
+  eval($('#FBOT_CONF').val());
+  document.getElementById('FBOT_START_EV').onclick();
+  BOT_INIT();
+}
 
 //init
 function BOT_INIT() {
@@ -44,15 +143,21 @@ function BOT_INIT() {
   counter = CounterStart;
   breaked = false;
 
+  document.getElementById('FBOT_CONF').style.display = "none";
+  document.getElementById('FBOT_CFG_CTRL').style.display = "none";
+  document.getElementById('FBOT_CONF_RESET').style.display = "none";
+
   //Create Stop Botton
-  if (document.getElementById('FBOT_STOP') == null) {
+  var ctrl = document.getElementById('FBOT_CTRL');
+  if (ctrl == null) {
     var btn = document.createElement('button');
-    btn.textContent = 'BOTを終了';
-    btn.id = 'FBOT_STOP';
-    btn.onclick = Destroy;
+    btn.id = 'FBOT_CTRL';
     btn.style = 'position:fixed;bottom:10px;left:10px;z-index:9;height:24px;width:99px'
     document.body.appendChild(btn);
   }
+  ctrl.textContent = 'BOTを終了';
+  ctrl.onclick = Destroy;
+
   //Create CALLBACK script
   if (document.getElementById('BOT_SRC') == null) {
     var BOTscript = document.createElement('script');
@@ -71,13 +176,16 @@ function BOT_DEBUG_DATA(data) {
 
 //コールバックメイン
 function LOAD_DATA(data) {
-  //終了していたら帰る
-  if (breaked) { return; }
   //投稿以外なら帰る
   if (data.code != 3) { return; }
+  var list = getFeedArray(data.param);
+  if (list[0][7] != sessionId && isMobile) {
+    document.getElementById('FBOT_AUDIO').play();
+  }
+  //終了していたら帰る
+  if (breaked) { return; }
   BOT_DEBUG_DATA(data);
   //取得
-  var list = getFeedArray(data.param);
   var PostName = list[0][3].replace(/<(.*?)>/g, "");
   var PostContent = list[0][5];
   //fix
@@ -299,7 +407,12 @@ function API_POST_ARRANGE(str) {
 //BOT 終了
 function Destroy() {
   DestroySpam();
-  $('#FBOT_STOP').remove();
+  document.getElementById('FBOT_CFG_CTRL').style.display = "";
+  document.getElementById('FBOT_CONF').style.display = "";
+  document.getElementById('FBOT_CONF_RESET').style.display = "";
+  var ctrl = document.getElementById('FBOT_CTRL');
+  ctrl.textContent = 'BOTを起動';
+  ctrl.onclick = BOT_CREATE;
   breaked = true;
   console.log('Bot was destroyed');
 }
