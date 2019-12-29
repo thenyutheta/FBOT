@@ -124,14 +124,14 @@ if (document.getElementById('FBOT_START_EV') == null) {
 $("div[id*=nend_adspace]").remove();
 $("#upgrade_room_menu").remove();
 
-function CFG_EXPAND_TOGGLE(){
+function CFG_EXPAND_TOGGLE() {
   var expand = document.getElementById('FBOT_CONF');
-  if(expand.style.height == cfg_text_height){
+  if (expand.style.height == cfg_text_height) {
     expand.style.height = "70%";
-    expand.textContent = 'Cfg縮小';
-  }else{
+    document.getElementById('FBOT_EXPAND').textContent = 'Cfg縮小';
+  } else {
     expand.style.height = cfg_text_height;
-    expand.textContent = 'Cfg拡張';
+    document.getElementById('FBOT_EXPAND').textContent = 'Cfg拡張';
   }
 }
 
