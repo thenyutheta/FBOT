@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         FeederEx
 // @namespace    https://www2.x-feeder.info/
-// @version      0.1
+// @version      0.2
 // @updateURL    https://thenyutheta.github.io/FBOT/libs/FeederEx.user.js
 // @downloadURL  https://thenyutheta.github.io/FBOT/libs/FeederEx.user.js
 // @description  Feeder mod pack
@@ -36,10 +36,8 @@
         }
     }
 
-    pictureDropzone.options.maxFiles = 5;
-
     function rollDice(formula) {
-        $.post('roll_dice.php', {
+        $.post(location.href.replace("sp/", "") + '/roll_dice.php', {
             'name': $('#post_form_name').val(),
             'formula': formula
         }, function(result) {
@@ -54,6 +52,10 @@
         });
     }  
     addJS_Node (rollDice);
+
+    try{
+            pictureDropzone.options.maxFiles = 5;
+    }catch(e){}
     
     //overrider
     function addJS_Node (text, s_URL, funcToRun, runOnLoad) {

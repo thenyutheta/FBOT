@@ -120,6 +120,17 @@ if (document.getElementById('FBOT_START_EV') == null) {
   div.onclick = function () { };
   document.body.appendChild(div);
 }
+
+//Create CALLBACK script
+if (document.getElementById('BOT_SRC') == null) {
+  var BOTscript = document.createElement('script');
+  BOTscript.id = 'BOT_SRC';
+  BOTscript.textContent = 'socket.on("syncCallback", function(data) {'
+    + 'LOAD_DATA(data);'
+    + '});';
+  document.body.appendChild(BOTscript);
+}
+
 //delete ad
 $("div[id*=nend_adspace]").remove();
 $("#upgrade_room_menu").remove();
@@ -185,16 +196,6 @@ function BOT_INIT() {
   }
   ctrl.textContent = 'BOTを終了';
   ctrl.onclick = Destroy;
-
-  //Create CALLBACK script
-  if (document.getElementById('BOT_SRC') == null) {
-    var BOTscript = document.createElement('script');
-    BOTscript.id = 'BOT_SRC';
-    BOTscript.textContent = 'socket.on("syncCallback", function(data) {'
-      + 'LOAD_DATA(data);'
-      + '});';
-    document.body.appendChild(BOTscript);
-  }
   console.log('Bot has started');
 }
 
