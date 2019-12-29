@@ -384,9 +384,9 @@ function SearchTable(source, table) {
 function REG_SEARCH(source, pattern, flg) {
   var re = null;
   if (flg != null) {
-    re = new RegExp(pattern, flg + "s");
+    re = new RegExp(pattern, flg);
   } else {
-    re = new RegExp(pattern, "s");
+    re = new RegExp(pattern);
   }
   var m = source.match(re);
   if (m != null) {
