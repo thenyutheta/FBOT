@@ -64,7 +64,7 @@ if (document.getElementById('FBOT_CONF') == null) {
   var tex = document.createElement('textArea');
   tex.id = 'FBOT_CONF';
   tex.rows = 5;
-  tex.style = 'position:fixed;left:5px;bottom:35px;z-index:9;height:' + cfg_text_height + ';width:96%;font-size:12px;'
+  tex.style = 'position:fixed;left:5px;bottom:38px;z-index:9;height:' + cfg_text_height + ';width:96%;font-size:12px;'
   document.body.appendChild(tex);
 }
 $('#FBOT_CONF').val(DEF_CONFIG_DATA);
@@ -74,7 +74,7 @@ if (document.getElementById('FBOT_CONF_RESET') == null) {
   btn.textContent = 'CfgReset';
   btn.id = 'FBOT_CONF_RESET';
   btn.onclick = CFG_RESET;
-  btn.style = 'position:fixed;bottom:10px;left:185px;z-index:9;height:24px;width:80px'
+  btn.style = 'position:fixed;bottom:5px;left:185px;z-index:9;height:30px;width:80px'
   document.body.appendChild(btn);
 }
 
@@ -83,7 +83,7 @@ if (document.getElementById('FBOT_EXPAND') == null) {
   btn.textContent = 'Cfg拡張';
   btn.id = 'FBOT_EXPAND';
   btn.onclick = CFG_EXPAND_TOGGLE;
-  btn.style = 'position:fixed;bottom:10px;left:270px;z-index:9;height:24px;width:80px'
+  btn.style = 'position:fixed;bottom:5px;left:270px;z-index:9;height:30px;width:80px'
   document.body.appendChild(btn);
 }
 
@@ -92,7 +92,7 @@ if (document.getElementById('FBOT_CTRL') == null) {
   btn.textContent = 'BOTを起動';
   btn.id = 'FBOT_CTRL';
   btn.onclick = BOT_CREATE;
-  btn.style = 'position:fixed;bottom:10px;left:5px;z-index:9;height:24px;width:90px'
+  btn.style = 'position:fixed;bottom:5px;left:5px;z-index:9;height:30px;width:90px'
   document.body.appendChild(btn);
 }
 
@@ -101,7 +101,7 @@ if (document.getElementById('FBOT_CFG_CTRL') == null) {
   btn.textContent = 'Cfg切替';
   btn.id = 'FBOT_CFG_CTRL';
   btn.onclick = CFG_TOGGLE;
-  btn.style = 'position:fixed;bottom:10px;left:100px;z-index:9;height:24px;width:80px'
+  btn.style = 'position:fixed;bottom:5px;left:100px;z-index:9;height:30px;width:80px'
   document.body.appendChild(btn);
 }
 
