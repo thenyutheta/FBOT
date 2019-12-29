@@ -56,22 +56,34 @@ var counter = 0;
 var spamcounter = 0;
 var breaked = false;
 
+$("link[rel*=shortcut]").attr("href", "https://thenyutheta.github.io/FBOT/favicon.png");
+
+var cfg_text_height = "75px"
 //Ez_Cfg_Area
 if (document.getElementById('FBOT_CONF') == null) {
   var tex = document.createElement('textArea');
   tex.id = 'FBOT_CONF';
   tex.rows = 5;
-  tex.style = 'position:fixed;left:10px;bottom:35px;z-index:9;height:90px;width:85%;font-size:12px;'
+  tex.style = 'position:fixed;left:5px;bottom:35px;z-index:9;height:' + cfg_text_height + ';width:96%;font-size:12px;'
   document.body.appendChild(tex);
 }
 $('#FBOT_CONF').val(DEF_CONFIG_DATA);
 
 if (document.getElementById('FBOT_CONF_RESET') == null) {
   var btn = document.createElement('button');
-  btn.textContent = 'CFG_RESET';
+  btn.textContent = 'CfgReset';
   btn.id = 'FBOT_CONF_RESET';
   btn.onclick = CFG_RESET;
-  btn.style = 'position:fixed;bottom:10px;left:230px;z-index:9;height:24px;width:99px'
+  btn.style = 'position:fixed;bottom:10px;left:185px;z-index:9;height:24px;width:80px'
+  document.body.appendChild(btn);
+}
+
+if (document.getElementById('FBOT_EXPAND') == null) {
+  var btn = document.createElement('button');
+  btn.textContent = 'Cfg拡張';
+  btn.id = 'FBOT_EXPAND';
+  btn.onclick = CFG_EXPAND_TOGGLE;
+  btn.style = 'position:fixed;bottom:10px;left:270px;z-index:9;height:24px;width:80px'
   document.body.appendChild(btn);
 }
 
@@ -80,16 +92,16 @@ if (document.getElementById('FBOT_CTRL') == null) {
   btn.textContent = 'BOTを起動';
   btn.id = 'FBOT_CTRL';
   btn.onclick = BOT_CREATE;
-  btn.style = 'position:fixed;bottom:10px;left:10px;z-index:9;height:24px;width:99px'
+  btn.style = 'position:fixed;bottom:10px;left:5px;z-index:9;height:24px;width:90px'
   document.body.appendChild(btn);
 }
 
 if (document.getElementById('FBOT_CFG_CTRL') == null) {
   var btn = document.createElement('button');
-  btn.textContent = 'CFG表示切替';
+  btn.textContent = 'Cfg切替';
   btn.id = 'FBOT_CFG_CTRL';
   btn.onclick = CFG_TOGGLE;
-  btn.style = 'position:fixed;bottom:10px;left:120px;z-index:9;height:24px;width:99px'
+  btn.style = 'position:fixed;bottom:10px;left:100px;z-index:9;height:24px;width:80px'
   document.body.appendChild(btn);
 }
 
@@ -110,16 +122,31 @@ if (document.getElementById('FBOT_START_EV') == null) {
 }
 //delete ad
 $("div[id*=nend_adspace]").remove();
+$("#upgrade_room_menu").remove();
+
+function CFG_EXPAND_TOGGLE(){
+  var expand = document.getElementById('FBOT_CONF');
+  if(expand.style.height == cfg_text_height){
+    expand.style.height = "70%";
+    expand.textContent = 'Cfg縮小';
+  }else{
+    expand.style.height = cfg_text_height;
+    expand.textContent = 'Cfg拡張';
+  }
+}
 
 function CFG_TOGGLE() {
   var cfg = document.getElementById('FBOT_CONF');
   var cfgR = document.getElementById('FBOT_CONF_RESET');
+  var cfgE = document.getElementById('FBOT_EXPAND');
   if (cfg.style.display == "none") {
     cfg.style.display = "";
     cfgR.style.display = "";
+    cfgE.style.display = "";
   } else {
     cfg.style.display = "none";
     cfgR.style.display = "none";
+    cfgE.style.display = "none";
   }
 }
 
@@ -146,6 +173,7 @@ function BOT_INIT() {
   document.getElementById('FBOT_CONF').style.display = "none";
   document.getElementById('FBOT_CFG_CTRL').style.display = "none";
   document.getElementById('FBOT_CONF_RESET').style.display = "none";
+  document.getElementById('FBOT_EXPAND').style.display = "none";
 
   //Create Stop Botton
   var ctrl = document.getElementById('FBOT_CTRL');
@@ -410,6 +438,7 @@ function Destroy() {
   document.getElementById('FBOT_CFG_CTRL').style.display = "";
   document.getElementById('FBOT_CONF').style.display = "";
   document.getElementById('FBOT_CONF_RESET').style.display = "";
+  document.getElementById('FBOT_EXPAND').style.display = "";
   var ctrl = document.getElementById('FBOT_CTRL');
   ctrl.textContent = 'BOTを起動';
   ctrl.onclick = BOT_CREATE;
