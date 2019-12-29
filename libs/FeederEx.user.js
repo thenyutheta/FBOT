@@ -1,12 +1,15 @@
 // ==UserScript==
 // @name         FeederEx
 // @namespace    https://www2.x-feeder.info/
-// @version      0.2
+// @version      0.3
 // @updateURL    https://thenyutheta.github.io/FBOT/libs/FeederEx.user.js
 // @downloadURL  https://thenyutheta.github.io/FBOT/libs/FeederEx.user.js
 // @description  Feeder mod pack
 // @author       theta
-// @match        http*://www2.x-feeder.info/*
+// @match        http*://www2.x-feeder.info/*/
+// @match        http*://www2.x-feeder.info/*/sp/
+// @match        http*://www2.x-feeder.info/index.html
+// @match        http*://www2.x-feeder.info/*/sp/index.html
 // @run-at document-end
 // @grant GM_setValue
 // @grant GM_getValue
