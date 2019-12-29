@@ -56,7 +56,7 @@ var counter = 0;
 var spamcounter = 0;
 var breaked = false;
 
-$("link[rel*=shortcut]").attr("href", "https://thenyutheta.github.io/FBOT/favicon.png");
+//$("link[rel*=shortcut]").attr("href", "https://thenyutheta.github.io/FBOT/favicon.png");
 
 var cfg_text_height = "75px"
 //Ez_Cfg_Area
