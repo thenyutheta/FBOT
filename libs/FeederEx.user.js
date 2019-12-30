@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         FeederEx
 // @namespace    https://www2.x-feeder.info/
-// @version      0.4
+// @version      0.5
 // @updateURL    https://thenyutheta.github.io/FBOT/libs/FeederEx.user.js
 // @downloadURL  https://thenyutheta.github.io/FBOT/libs/FeederEx.user.js
 // @description  Feeder mod pack
