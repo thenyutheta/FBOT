@@ -203,8 +203,17 @@ function BOT_DEBUG_DATA(data) {
 
 }
 
+function EXAPI_GET_ALL_DATA(data){
+
+}
+
+function EXAPI_GET_POST_DATA(data){
+
+}
+
 //コールバックメイン
 function LOAD_DATA(data) {
+  EXAPI_GET_ALL_DATA(data);
   //投稿以外なら帰る
   if (data.code != 3) { return; }
   var list = getFeedArray(data.param);
@@ -214,6 +223,7 @@ function LOAD_DATA(data) {
   //終了していたら帰る
   if (breaked) { return; }
   BOT_DEBUG_DATA(data);
+  EXAPI_GET_POST_DATA(data);
   //取得
   var PostName = list[0][3].replace(/<(.*?)>/g, "");
   var PostContent = list[0][5];
