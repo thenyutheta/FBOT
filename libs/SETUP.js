@@ -30,6 +30,7 @@ function _CONFIG() {
   CounterStart = 0;
   CountUp = 1;
 
+  ResponseOnly = false;
   SpamOnly = false;
   SpamStart = ['{regi}hey spam'];
   SpamEnd = ['{regi}stop spam'];

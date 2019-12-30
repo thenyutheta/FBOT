@@ -11,6 +11,7 @@ var IsSpPost = 0;
 var CounterStart = 0;
 var CountUp = 1;
 
+var ResponseOnly = false;
 var SpamOnly = false;
 var SpamStart = ['{regi}hey spam'];
 var SpamEnd = ['{regi}stop spam'];
@@ -34,6 +35,7 @@ var DEF_CONFIG_DATA = "TargetName = [''];\n" +
   "CounterStart = 0;\n" +
   "CountUp = 1;\n" +
   "\n" +
+  "ResponseOnly = false;\n" +
   "SpamOnly = false;\n" +
   "SpamStart = ['{regi}hey spam'];\n" +
   "SpamEnd = ['{regi}stop spam'];\n" +
@@ -191,11 +193,11 @@ function BOT_INIT() {
   console.log('Bot has started');
 }
 
-function BOT_DEBUG_DATA(data) {}
+function BOT_DEBUG_DATA(data) { }
 
-function EXAPI_GET_ALL_DATA(data){}
-function EXAPI_GET_POST_DATA(data){}
-function EXAPI_GET_POST_DATA_PARAM_LIST(data){}
+function EXAPI_GET_ALL_DATA(data) { }
+function EXAPI_GET_POST_DATA(data) { }
+function EXAPI_GET_POST_DATA_PARAM_LIST(data) { }
 
 //コールバックメイン
 function LOAD_DATA(data) {
@@ -234,17 +236,19 @@ function LOAD_DATA(data) {
     }
   }
 
-  //SPAM START
-  if (sender == null) {
-    var SPAMSTART = SearchTable(PostContent, SpamStart);
-    if (SPAMSTART != null) {
-      //reset
-      spamcounter = 0;
-      DestroySpam();
-      setTimeout(POST_MAIN(info + '\n' + REPLACEDATA(GetText(BotSpamStartText), list, SPAMSTART)), PostWait);
-      sender = setInterval(function () { SPAM_POST(info + '\n' + GetText(BotSpamText)) }, SpamInterval);
-      breaker = setTimeout(DestroySpam, SpamTimeOut);
-      return;
+  if (!ResponseOnly) {
+    //SPAM START
+    if (sender == null) {
+      var SPAMSTART = SearchTable(PostContent, SpamStart);
+      if (SPAMSTART != null) {
+        //reset
+        spamcounter = 0;
+        DestroySpam();
+        setTimeout(POST_MAIN(info + '\n' + REPLACEDATA(GetText(BotSpamStartText), list, SPAMSTART)), PostWait);
+        sender = setInterval(function () { SPAM_POST(info + '\n' + GetText(BotSpamText)) }, SpamInterval);
+        breaker = setTimeout(DestroySpam, SpamTimeOut);
+        return;
+      }
     }
   }
 
