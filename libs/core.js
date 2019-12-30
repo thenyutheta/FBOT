@@ -7,6 +7,9 @@ var BotText = ['[{hit}]\nHello, {name}!\n>>{id}No.{count}'];
 var BotBreakText = ['終了コード:{hit}によって終了\n>>{id}No.{count}'];
 var PostWait = 1000;
 
+var UseInitalPost = false;
+var InitalPostText = ['Hello', 'こんにちは'];
+
 var IsSpPost = 0;
 var CounterStart = 0;
 var CountUp = 1;
@@ -30,6 +33,9 @@ var DEF_CONFIG_DATA = "TargetName = [''];\n" +
   "BotText = ['[{hit}]\\nHello, {name}!\\n>>{id}No.{count}'];\n" +
   "BotBreakText = ['終了コード:{hit}によって終了\\n>>{id}No.{count}'];\n" +
   "PostWait = 1000;\n" +
+  "\n" +
+  "UseInitalPost = false;\n" +
+  "InitalPostText = ['Hello', 'こんにちは'];\n" +
   "\n" +
   "IsSpPost = 0;\n" +
   "CounterStart = 0;\n" +
@@ -191,6 +197,10 @@ function BOT_INIT() {
   ctrl.textContent = 'BOTを終了';
   ctrl.onclick = Destroy;
   console.log('Bot has started');
+
+  if(UseInitalPost){
+    POST_MAIN(GetText(InitalPostText));
+  }
 }
 
 function BOT_DEBUG_DATA(data) { }

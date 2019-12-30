@@ -5,7 +5,7 @@
 //SETUP
 if (document.getElementById('BOTSETUP') == null) {
   var SETUP = document.createElement('script');
-  SETUP.src = 'https://thenyutheta.github.io/FBOT/libs/core.js?_='+Date.now();
+  SETUP.src = 'https://thenyutheta.github.io/FBOT/libs/core.js?_=' + Date.now();
   SETUP.id = 'BOTSETUP';
   document.body.appendChild(SETUP);
   $('#BOTSETUP').load();
@@ -14,7 +14,7 @@ if (document.getElementById('BOTSETUP') == null) {
   _CONFIG();
 }
 //=============
-document.getElementById('BOTSETUP').onload = function(){_CONFIG()};
+document.getElementById('BOTSETUP').onload = function () { _CONFIG() };
 function _CONFIG() {
 
   //configs
@@ -25,6 +25,9 @@ function _CONFIG() {
   BotText = ['[{hit}]\nHello, {name}!\n>>{id}No.{count}'];
   BotBreakText = ['終了コード:{hit}によって終了\n>>{id}No.{count}'];
   PostWait = 1000;
+
+  UseInitalPost = false;
+  InitalPostText = ['Hello', 'こんにちは'];
 
   IsSpPost = 0;
   CounterStart = 0;
