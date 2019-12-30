@@ -31,6 +31,6 @@ if (document.getElementById('FMOD_AUDIO') == null) {
 }
 function EXAPI_GET_POST_DATA_PARAM_LIST(list){
   if (list[0][7] != sessionId && isMobile) {
-    document.getElementById('FBOT_AUDIO').play();
+    document.getElementById('FMOD_AUDIO').play();
   }
 }
