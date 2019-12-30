@@ -105,14 +105,6 @@ if (document.getElementById('FBOT_CFG_CTRL') == null) {
   document.body.appendChild(btn);
 }
 
-if (document.getElementById('FBOT_AUDIO') == null) {
-  var aud = document.createElement('audio');
-  aud.id = 'FBOT_AUDIO';
-  aud.src = location.href.replace("sp/", "") + "sounds/s2.mp3";
-  aud.style = "display:none";
-  document.body.appendChild(aud);
-}
-
 if (document.getElementById('FBOT_START_EV') == null) {
   var div = document.createElement('div');
   div.id = 'FBOT_START_EV';
@@ -199,38 +191,30 @@ function BOT_INIT() {
   console.log('Bot has started');
 }
 
-function BOT_DEBUG_DATA(data) {
+function BOT_DEBUG_DATA(data) {}
 
-}
-
-function EXAPI_GET_ALL_DATA(data){
-
-}
-
-function EXAPI_GET_POST_DATA(data){
-
-}
+function EXAPI_GET_ALL_DATA(data){}
+function EXAPI_GET_POST_DATA(data){}
+function EXAPI_GET_POST_DATA_PARAM_LIST(data){}
 
 //コールバックメイン
 function LOAD_DATA(data) {
   EXAPI_GET_ALL_DATA(data);
   //投稿以外なら帰る
   if (data.code != 3) { return; }
+  EXAPI_GET_POST_DATA(data);
   var list = getFeedArray(data.param);
-  if (list[0][7] != sessionId && isMobile) {
-    document.getElementById('FBOT_AUDIO').play();
-  }
+  EXAPI_GET_POST_DATA_PARAM_LIST(list);
   //終了していたら帰る
   if (breaked) { return; }
   BOT_DEBUG_DATA(data);
-  EXAPI_GET_POST_DATA(data);
   //取得
   var PostName = list[0][3].replace(/<(.*?)>/g, "");
   var PostContent = list[0][5];
   //fix
   PostContent = POST_CONTENT_FIX(PostContent);
   var PostId = list[0][0];
-  //自分や、BOTには反応しない。
+  //BOTには反応しない。
   if (PostName.indexOf(BotName) > -1 || PostContent.indexOf(info) > -1) { return; }
   //BREAK
   var BRKHIT = SearchTable(PostContent, BreakText);

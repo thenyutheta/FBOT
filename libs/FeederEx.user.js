@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         FeederEx
 // @namespace    https://www2.x-feeder.info/
-// @version      0.3
+// @version      0.4
 // @updateURL    https://thenyutheta.github.io/FBOT/libs/FeederEx.user.js
 // @downloadURL  https://thenyutheta.github.io/FBOT/libs/FeederEx.user.js
 // @description  Feeder mod pack
@@ -37,42 +37,13 @@
         document.getElementById('FBOT_START_EV').onclick = function (){
             GM_setValue("config", $('#FBOT_CONF').val())
         }
-    }
 
-    function rollDice(formula) {
-        $.post(location.href.replace("sp/", "") + '/roll_dice.php', {
-            'name': $('#post_form_name').val(),
-            'formula': formula
-        }, function(result) {
-            if (result == 'OK') {
-                if (name != $('#post_form_name').val()) {
-                    name = $('#post_form_name').val();
-                    syncMyStatus();
-                }
-            } else {
-                alert(result);
-            }
-        });
-    }  
-    addJS_Node (rollDice);
-
-    try{
-            pictureDropzone.options.maxFiles = 5;
-    }catch(e){}
-    
-    //overrider
-    function addJS_Node (text, s_URL, funcToRun, runOnLoad) {
-        var D                                   = document;
-        var scriptNode                          = D.createElement ('script');
-        if (runOnLoad) {
-            scriptNode.addEventListener ("load", runOnLoad, false);
-        }
-        scriptNode.type                         = "text/javascript";
-        if (text)       scriptNode.textContent  = text;
-        if (s_URL)      scriptNode.src          = s_URL;
-        if (funcToRun)  scriptNode.textContent  = '(' + funcToRun.toString() + ')()';
-    
-        var targ = D.getElementsByTagName ('head')[0] || D.body || D.documentElement;
-        targ.appendChild (scriptNode);
+        if (document.getElementById('FMODS') == null) {
+            var fmod = document.createElement('script');
+            fmod.src = 'https://thenyutheta.github.io/FBOT/libs/mods.js?_=' + Date.now();
+            fmod.id = 'FMODS';
+            document.body.appendChild(fmod);
+            $('FMODS').load();
+        } 
     }
 })();
