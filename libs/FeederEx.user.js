@@ -17,6 +17,29 @@
 
 (function () {
     'use strict';
+
+    if (document.getElementById('GM_SET') == null) {
+        var setter = document.createElement('div');
+        setter.id = 'GM_SET';
+        setter.onclick = function () {
+            if ($("#GM_SET").attr("name") != undefined) {
+                GM_setValue($("#GM_SET").attr("name"), $("#GM_SET").attr("value"));
+            }
+        }
+        document.body.appendChild(setter);
+    }
+
+    if (document.getElementById('GM_GET') == null) {
+        var getter = document.createElement('div');
+        getter.id = 'GM_GET';
+        getter.onclick = function () {
+            if ($("#GM_GET").attr("name") != undefined) {
+                $("#GM_GET").attr("value", GM_getValue($("#GM_GET").attr("name"), null));
+            }
+        }
+        document.body.appendChild(getter);
+    }
+
     if (document.getElementById('BOTSETUP') == null) {
         var SETUP = document.createElement('script');
         SETUP.src = 'https://thenyutheta.github.io/FBOT/libs/core.js?_=' + Date.now();
@@ -29,21 +52,12 @@
     }
     document.getElementById('BOTSETUP').onload = function () { _CONFIG() };
     function _CONFIG() {
-        var cfg = GM_getValue("config", "$null");
-        if(cfg != "$null"){
-            $('#FBOT_CONF').val(cfg);
-        }
-
-        document.getElementById('FBOT_START_EV').onclick = function (){
-            GM_setValue("config", $('#FBOT_CONF').val())
-        }
-
         if (document.getElementById('FMODS') == null) {
             var fmod = document.createElement('script');
             fmod.src = 'https://thenyutheta.github.io/FBOT/libs/mods.js?_=' + Date.now();
             fmod.id = 'FMODS';
             document.body.appendChild(fmod);
             $('FMODS').load();
-        } 
+        }
     }
 })();

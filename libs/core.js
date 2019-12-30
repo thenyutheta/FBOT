@@ -75,7 +75,14 @@ if (document.getElementById('FBOT_CONF') == null) {
   tex.style = 'position:fixed;left:5px;bottom:38px;z-index:9;height:' + cfg_text_height + ';width:96%;font-size:12px;'
   document.body.appendChild(tex);
 }
-$('#FBOT_CONF').val(DEF_CONFIG_DATA);
+{
+  var config_bot_Data = GET_GM_VAL("config_bot");
+  if (config_bot_Data == null) {
+    $('#FBOT_CONF').val(DEF_CONFIG_DATA);
+  }else{
+    $('#FBOT_CONF').val(config_bot_Data);
+  }
+}
 
 if (document.getElementById('FBOT_CONF_RESET') == null) {
   var btn = document.createElement('button');
@@ -113,14 +120,6 @@ if (document.getElementById('FBOT_CFG_CTRL') == null) {
   document.body.appendChild(btn);
 }
 
-if (document.getElementById('FBOT_START_EV') == null) {
-  var div = document.createElement('div');
-  div.id = 'FBOT_START_EV';
-  div.style = "display:none";
-  div.onclick = function () { };
-  document.body.appendChild(div);
-}
-
 //Create CALLBACK script
 if (document.getElementById('BOT_SRC') == null) {
   var BOTscript = document.createElement('script');
@@ -134,6 +133,29 @@ if (document.getElementById('BOT_SRC') == null) {
 //delete ad
 $("div[id*=nend_adspace]").remove();
 $("#upgrade_room_menu").remove();
+
+function GET_GM_VAL(name) {
+  var getter = document.getElementById("GM_GET");
+  if (getter != null) {
+    $("#GM_GET").attr("name", name);
+    getter.onclick();
+    return $("#GM_GET").attr("value");
+  } else {
+    return null;
+  }
+}
+
+function SET_GM_VAL(name, value) {
+  var setter = document.getElementById("GM_SET");
+  if (setter != null) {
+    $("#GM_SET").attr("name", name);
+    $("#GM_SET").attr("value", value);
+    setter.onclick();
+    return true;
+  } else {
+    return false;
+  }
+}
 
 function CFG_EXPAND_TOGGLE() {
   var expand = document.getElementById('FBOT_CONF');
@@ -167,7 +189,7 @@ function CFG_RESET() {
 
 function BOT_CREATE() {
   eval($('#FBOT_CONF').val());
-  document.getElementById('FBOT_START_EV').onclick();
+  SET_GM_VAL("config_bot", ('#FBOT_CONF').val());
   BOT_INIT();
 }
 
@@ -198,7 +220,7 @@ function BOT_INIT() {
   ctrl.onclick = Destroy;
   console.log('Bot has started');
 
-  if(UseInitalPost){
+  if (UseInitalPost) {
     POST_MAIN(info + '\n' + GetText(InitalPostText));
   }
 }
