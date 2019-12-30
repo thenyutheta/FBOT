@@ -189,7 +189,7 @@ function CFG_RESET() {
 
 function BOT_CREATE() {
   eval($('#FBOT_CONF').val());
-  SET_GM_VAL("config_bot", ('#FBOT_CONF').val());
+  SET_GM_VAL("config_bot", $('#FBOT_CONF').val());
   BOT_INIT();
 }
 
