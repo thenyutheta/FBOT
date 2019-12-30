@@ -199,7 +199,7 @@ function BOT_INIT() {
   console.log('Bot has started');
 
   if(UseInitalPost){
-    POST_MAIN(GetText(InitalPostText));
+    POST_MAIN(info + '\n' + GetText(InitalPostText));
   }
 }
 
