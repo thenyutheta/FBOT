@@ -66,20 +66,20 @@ var breaked = false;
 
 //$("link[rel*=shortcut]").attr("href", "https://thenyutheta.github.io/FBOT/favicon.png");
 
-var cfg_text_height = "75px"
+var cfg_text_height = "70px"
 //Ez_Cfg_Area
 if (document.getElementById('FBOT_CONF') == null) {
   var tex = document.createElement('textArea');
   tex.id = 'FBOT_CONF';
   tex.rows = 5;
-  tex.style = 'position:fixed;left:5px;bottom:38px;z-index:9;height:' + cfg_text_height + ';width:96%;font-size:12px;'
+  tex.style = 'position:fixed;bottom:40px;z-index:9;height:' + cfg_text_height + ';width:100%;font-size:12px;'
   document.body.appendChild(tex);
 }
 {
   var config_bot_Data = GET_GM_VAL("config_bot");
   if (config_bot_Data == null) {
     $('#FBOT_CONF').val(DEF_CONFIG_DATA);
-  }else{
+  } else {
     $('#FBOT_CONF').val(config_bot_Data);
   }
 }
@@ -89,7 +89,7 @@ if (document.getElementById('FBOT_CONF_RESET') == null) {
   btn.textContent = 'CfgReset';
   btn.id = 'FBOT_CONF_RESET';
   btn.onclick = CFG_RESET;
-  btn.style = 'position:fixed;bottom:5px;left:185px;z-index:9;height:30px;width:80px'
+  btn.style = 'position:fixed;bottom:5px;left:185px;z-index:9;height:30px;width:70px;font-size:12px;'
   document.body.appendChild(btn);
 }
 
@@ -98,25 +98,25 @@ if (document.getElementById('FBOT_EXPAND') == null) {
   btn.textContent = 'Cfg拡張';
   btn.id = 'FBOT_EXPAND';
   btn.onclick = CFG_EXPAND_TOGGLE;
-  btn.style = 'position:fixed;bottom:5px;left:270px;z-index:9;height:30px;width:80px'
+  btn.style = 'position:fixed;bottom:5px;left:260px;z-index:9;height:30px;width:70px;font-size:12px;'
   document.body.appendChild(btn);
 }
 
 if (document.getElementById('FBOT_CTRL') == null) {
   var btn = document.createElement('button');
-  btn.textContent = 'BOTを起動';
+  btn.textContent = 'BotStart';
   btn.id = 'FBOT_CTRL';
   btn.onclick = BOT_CREATE;
-  btn.style = 'position:fixed;bottom:5px;left:5px;z-index:9;height:30px;width:90px'
+  btn.style = 'position:fixed;bottom:5px;left:35px;z-index:9;height:30px;width:70px;font-size:12px;'
   document.body.appendChild(btn);
 }
 
 if (document.getElementById('FBOT_CFG_CTRL') == null) {
   var btn = document.createElement('button');
-  btn.textContent = 'Cfg切替';
+  btn.textContent = 'CfgHide';
   btn.id = 'FBOT_CFG_CTRL';
   btn.onclick = CFG_TOGGLE;
-  btn.style = 'position:fixed;bottom:5px;left:100px;z-index:9;height:30px;width:80px'
+  btn.style = 'position:fixed;bottom:5px;left:110px;z-index:9;height:30px;width:70px; font-size:12px;'
   document.body.appendChild(btn);
 }
 
@@ -139,7 +139,10 @@ function GET_GM_VAL(name) {
   if (getter != null) {
     $("#GM_GET").attr("name", name);
     getter.onclick();
-    return $("#GM_GET").attr("value");
+    var res = $("#GM_GET").attr("value");
+    $("#GM_GET").attr("value", undefined);
+    $("#GM_GET").attr("name", undefined);
+    return res;
   } else {
     return null;
   }
@@ -151,6 +154,8 @@ function SET_GM_VAL(name, value) {
     $("#GM_SET").attr("name", name);
     $("#GM_SET").attr("value", value);
     setter.onclick();
+    $("#GM_SET").attr("name", undefined);
+    $("#GM_SET").attr("value", undefined);
     return true;
   } else {
     return false;
@@ -172,14 +177,17 @@ function CFG_TOGGLE() {
   var cfg = document.getElementById('FBOT_CONF');
   var cfgR = document.getElementById('FBOT_CONF_RESET');
   var cfgE = document.getElementById('FBOT_EXPAND');
+  var cfgCtr = document.getElementById('FBOT_CFG_CTRL');
   if (cfg.style.display == "none") {
     cfg.style.display = "";
     cfgR.style.display = "";
     cfgE.style.display = "";
+    cfgCtr.textContent = "CfgHide";
   } else {
     cfg.style.display = "none";
     cfgR.style.display = "none";
     cfgE.style.display = "none";
+    cfgCtr.textContent = "CfgShow";
   }
 }
 
@@ -188,7 +196,12 @@ function CFG_RESET() {
 }
 
 function BOT_CREATE() {
-  eval($('#FBOT_CONF').val());
+  try {
+    eval($('#FBOT_CONF').val());
+  } catch (e) {
+    alert(e);
+    return;
+  }
   SET_GM_VAL("config_bot", $('#FBOT_CONF').val());
   BOT_INIT();
 }
@@ -216,7 +229,7 @@ function BOT_INIT() {
     btn.style = 'position:fixed;bottom:10px;left:10px;z-index:9;height:24px;width:99px'
     document.body.appendChild(btn);
   }
-  ctrl.textContent = 'BOTを終了';
+  ctrl.textContent = 'BotEnd';
   ctrl.onclick = Destroy;
   console.log('Bot has started');
 
@@ -471,7 +484,7 @@ function Destroy() {
   document.getElementById('FBOT_CONF_RESET').style.display = "";
   document.getElementById('FBOT_EXPAND').style.display = "";
   var ctrl = document.getElementById('FBOT_CTRL');
-  ctrl.textContent = 'BOTを起動';
+  ctrl.textContent = 'BotStart';
   ctrl.onclick = BOT_CREATE;
   breaked = true;
   console.log('Bot was destroyed');
