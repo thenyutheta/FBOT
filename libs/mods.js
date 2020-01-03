@@ -41,3 +41,12 @@ function EXAPI_GET_POST_DATA_PARAM_LIST(list){
     document.getElementById('FMOD_AUDIO').play();
   }
 }
+
+function API_POST(text, IsSp = 0, category = 0){
+  $.ajax({
+    url: Target,
+    type: 'POST',
+    data: 'name=' + name + '&comment=' + text + '&is_special=' + IsSp + '&category_id=' + category,
+    dataType: 'application/x-www-form-urlencoded; charset=UTF-8',
+  });
+}
