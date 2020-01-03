@@ -21,7 +21,14 @@ function rollDice(formula) {
 //5pix
 try { pictureDropzone.options.maxFiles = 5; } catch (e) { }
 
+//delete ad
+$("div[id*=nend_adspace]").remove();
+$("#main_right div[style] *").remove()
+$("#main_right div[style]").css("height", "0")
+$("div[style*=inline-block] iframe").remove()
+$("#upgrade_room_menu").remove();
 
+//sound_plus
 if (document.getElementById('FMOD_AUDIO') == null) {
   var aud = document.createElement('audio');
   aud.id = 'FMOD_AUDIO';

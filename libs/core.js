@@ -130,10 +130,6 @@ if (document.getElementById('BOT_SRC') == null) {
   document.body.appendChild(BOTscript);
 }
 
-//delete ad
-$("div[id*=nend_adspace]").remove();
-$("#upgrade_room_menu").remove();
-
 function GET_GM_VAL(name) {
   var getter = document.getElementById("GM_GET");
   if (getter != null) {
