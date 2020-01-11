@@ -26,7 +26,8 @@ var SpamMaxCount = 100;
 var SpamTimeOut = 1800000;
 //=======
 
-var DEF_CONFIG_DATA = "TargetName = [''];\n" +
+var DEF_CONFIG_DATA =
+  "TargetName = [''];\n" +
   "TargetText = ['{regi}HEY BOT', '{dice}', '{reg}Hey.+Bot'];\n" +
   "BreakText = ['{regi}break bot'];\n" +
   "BotName = 'BOT';\n" +
@@ -67,68 +68,77 @@ var breaked = false;
 //$("link[rel*=shortcut]").attr("href", "https://thenyutheta.github.io/FBOT/favicon.png");
 
 var cfg_text_height = "70px"
-//Ez_Cfg_Area
-if (document.getElementById('FBOT_CONF') == null) {
-  var tex = document.createElement('textArea');
-  tex.id = 'FBOT_CONF';
-  tex.rows = 5;
-  tex.style = 'position:fixed;bottom:40px;z-index:9;height:' + cfg_text_height + ';width:100%;font-size:12px;'
-  document.body.appendChild(tex);
-}
+
+function BOT_CreateCtrlUI()
 {
-  var config_bot_Data = GET_GM_VAL("config_bot");
-  if (config_bot_Data == null) {
-    $('#FBOT_CONF').val(DEF_CONFIG_DATA);
-  } else {
-    $('#FBOT_CONF').val(config_bot_Data);
+  //Ez_Cfg_Area
+  if (document.getElementById('FBOT_CONF') == null) {
+    let tex = document.createElement('textArea');
+    tex.id = 'FBOT_CONF';
+    tex.rows = 5;
+    tex.style = 'position:fixed;bottom:40px;z-index:9;height:' + cfg_text_height + ';width:100%;font-size:12px;'
+    document.body.appendChild(tex);
+  }
+
+
+  {
+    let config_bot_Data = GET_GM_VAL("config_bot");
+    if (config_bot_Data == null) {
+      $('#FBOT_CONF').val(DEF_CONFIG_DATA);
+    } else {
+      $('#FBOT_CONF').val(config_bot_Data);
+    }
+  }
+
+  if (document.getElementById('FBOT_CONF_RESET') == null) {
+    let btn = document.createElement('button');
+    btn.textContent = 'CfgReset';
+    btn.id = 'FBOT_CONF_RESET';
+    btn.onclick = CFG_RESET;
+    btn.style = 'position:fixed;bottom:5px;left:185px;z-index:9;height:30px;width:70px;font-size:12px;'
+    document.body.appendChild(btn);
+  }
+
+  if (document.getElementById('FBOT_EXPAND') == null) {
+    let btn = document.createElement('button');
+    btn.textContent = 'Cfg拡張';
+    btn.id = 'FBOT_EXPAND';
+    btn.onclick = CFG_EXPAND_TOGGLE;
+    btn.style = 'position:fixed;bottom:5px;left:260px;z-index:9;height:30px;width:70px;font-size:12px;'
+    document.body.appendChild(btn);
+  }
+
+  if (document.getElementById('FBOT_CTRL') == null) {
+    let btn = document.createElement('button');
+    btn.textContent = 'BotStart';
+    btn.id = 'FBOT_CTRL';
+    btn.onclick = BOT_CREATE;
+    btn.style = 'position:fixed;bottom:5px;left:35px;z-index:9;height:30px;width:70px;font-size:12px;'
+    btn.style.color = "#000000";
+    document.body.appendChild(btn);
+  }
+
+  if (document.getElementById('FBOT_CFG_CTRL') == null) {
+    let btn = document.createElement('button');
+    btn.textContent = 'CfgHide';
+    btn.id = 'FBOT_CFG_CTRL';
+    btn.onclick = CFG_TOGGLE;
+    btn.style = 'position:fixed;bottom:5px;left:110px;z-index:9;height:30px;width:70px; font-size:12px;'
+    document.body.appendChild(btn);
+  }
+
+  //Create CALLBACK script
+  if (document.getElementById('BOT_SRC') == null) {
+    let BOTscript = document.createElement('script');
+    BOTscript.id = 'BOT_SRC';
+    BOTscript.textContent = 'socket.on("syncCallback", function(data) {'
+      + 'LOAD_DATA(data);'
+      + '});';
+    document.body.appendChild(BOTscript);
   }
 }
 
-if (document.getElementById('FBOT_CONF_RESET') == null) {
-  var btn = document.createElement('button');
-  btn.textContent = 'CfgReset';
-  btn.id = 'FBOT_CONF_RESET';
-  btn.onclick = CFG_RESET;
-  btn.style = 'position:fixed;bottom:5px;left:185px;z-index:9;height:30px;width:70px;font-size:12px;'
-  document.body.appendChild(btn);
-}
-
-if (document.getElementById('FBOT_EXPAND') == null) {
-  var btn = document.createElement('button');
-  btn.textContent = 'Cfg拡張';
-  btn.id = 'FBOT_EXPAND';
-  btn.onclick = CFG_EXPAND_TOGGLE;
-  btn.style = 'position:fixed;bottom:5px;left:260px;z-index:9;height:30px;width:70px;font-size:12px;'
-  document.body.appendChild(btn);
-}
-
-if (document.getElementById('FBOT_CTRL') == null) {
-  var btn = document.createElement('button');
-  btn.textContent = 'BotStart';
-  btn.id = 'FBOT_CTRL';
-  btn.onclick = BOT_CREATE;
-  btn.style = 'position:fixed;bottom:5px;left:35px;z-index:9;height:30px;width:70px;font-size:12px;'
-  document.body.appendChild(btn);
-}
-
-if (document.getElementById('FBOT_CFG_CTRL') == null) {
-  var btn = document.createElement('button');
-  btn.textContent = 'CfgHide';
-  btn.id = 'FBOT_CFG_CTRL';
-  btn.onclick = CFG_TOGGLE;
-  btn.style = 'position:fixed;bottom:5px;left:110px;z-index:9;height:30px;width:70px; font-size:12px;'
-  document.body.appendChild(btn);
-}
-
-//Create CALLBACK script
-if (document.getElementById('BOT_SRC') == null) {
-  var BOTscript = document.createElement('script');
-  BOTscript.id = 'BOT_SRC';
-  BOTscript.textContent = 'socket.on("syncCallback", function(data) {'
-    + 'LOAD_DATA(data);'
-    + '});';
-  document.body.appendChild(BOTscript);
-}
+BOT_CreateCtrlUI();
 
 function GET_GM_VAL(name) {
   var getter = document.getElementById("GM_GET");
@@ -212,13 +222,9 @@ function BOT_INIT() {
   counter = CounterStart;
   breaked = false;
 
-  document.getElementById('FBOT_CONF').style.display = "none";
-  document.getElementById('FBOT_CFG_CTRL').style.display = "none";
-  document.getElementById('FBOT_CONF_RESET').style.display = "none";
-  document.getElementById('FBOT_EXPAND').style.display = "none";
-
   //Create Stop Botton
   var ctrl = document.getElementById('FBOT_CTRL');
+  //fix
   if (ctrl == null) {
     var btn = document.createElement('button');
     btn.id = 'FBOT_CTRL';
@@ -226,6 +232,7 @@ function BOT_INIT() {
     document.body.appendChild(btn);
   }
   ctrl.textContent = 'BotEnd';
+  ctrl.style.color = "#FF0000";
   ctrl.onclick = Destroy;
   console.log('Bot has started');
 
@@ -475,12 +482,9 @@ function API_POST_ARRANGE(str) {
 //BOT 終了
 function Destroy() {
   DestroySpam();
-  document.getElementById('FBOT_CFG_CTRL').style.display = "";
-  document.getElementById('FBOT_CONF').style.display = "";
-  document.getElementById('FBOT_CONF_RESET').style.display = "";
-  document.getElementById('FBOT_EXPAND').style.display = "";
   var ctrl = document.getElementById('FBOT_CTRL');
   ctrl.textContent = 'BotStart';
+  ctrl.style.color = "#000000";
   ctrl.onclick = BOT_CREATE;
   breaked = true;
   console.log('Bot was destroyed');

@@ -1,3 +1,7 @@
+//Todo : 
+//Load順の変更:mods => bot
+//User.jsのVersion取得　update誘導 : スルーフラグ 
+
 //override dice
 function rollDice(formula) {
   $.post(location.href.replace("sp/", "") + '/roll_dice.php', {
