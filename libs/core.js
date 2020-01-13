@@ -70,16 +70,22 @@ var breaked = false;
 var cfg_text_height = "70px"
 
 function BOT_CreateCtrlUI() {
+  if (document.getElementById('FBOT_CTRL_UI_DIV') == null) {
+    let div = document.createElement('div');
+    div.id = 'FBOT_CTRL_UI_DIV';
+    document.body.appendChild(div);
+  }
+  var parent = document.getElementById("FBOT_CTRL_UI_DIV");
+
   //Ez_Cfg_Area
   if (document.getElementById('FBOT_CONF') == null) {
     let tex = document.createElement('textArea');
     tex.id = 'FBOT_CONF';
     tex.rows = 5;
     tex.style = 'position:fixed;bottom:40px;z-index:9;height:' + cfg_text_height + ';width:100%;font-size:12px;'
-    document.body.appendChild(tex);
+    parent.appendChild(tex);
   }
-
-
+  //set value
   {
     let config_bot_Data = GET_GM_VAL("config_bot");
     if (config_bot_Data == null) {
@@ -88,25 +94,25 @@ function BOT_CreateCtrlUI() {
       $('#FBOT_CONF').val(config_bot_Data);
     }
   }
-
+  //cfg reset btn
   if (document.getElementById('FBOT_CONF_RESET') == null) {
     let btn = document.createElement('button');
     btn.textContent = 'CfgReset';
     btn.id = 'FBOT_CONF_RESET';
     btn.onclick = CFG_RESET;
     btn.style = 'position:fixed;bottom:5px;left:185px;z-index:9;height:30px;width:70px;font-size:12px;'
-    document.body.appendChild(btn);
+    parent.appendChild(btn);
   }
-
+  //expand btn
   if (document.getElementById('FBOT_EXPAND') == null) {
     let btn = document.createElement('button');
     btn.textContent = 'Cfg拡張';
     btn.id = 'FBOT_EXPAND';
     btn.onclick = CFG_EXPAND_TOGGLE;
     btn.style = 'position:fixed;bottom:5px;left:260px;z-index:9;height:30px;width:70px;font-size:12px;'
-    document.body.appendChild(btn);
+    parent.appendChild(btn);
   }
-
+  //boot btn
   if (document.getElementById('FBOT_CTRL') == null) {
     let btn = document.createElement('button');
     btn.textContent = 'BotStart';
@@ -114,16 +120,16 @@ function BOT_CreateCtrlUI() {
     btn.onclick = BOT_CREATE;
     btn.style = 'position:fixed;bottom:5px;left:35px;z-index:9;height:30px;width:70px;font-size:12px;'
     btn.style.color = "#000000";
-    document.body.appendChild(btn);
+    parent.appendChild(btn);
   }
-
+  //show / hide
   if (document.getElementById('FBOT_CFG_CTRL') == null) {
     let btn = document.createElement('button');
     btn.textContent = 'CfgHide';
     btn.id = 'FBOT_CFG_CTRL';
     btn.onclick = CFG_TOGGLE;
     btn.style = 'position:fixed;bottom:5px;left:110px;z-index:9;height:30px;width:70px; font-size:12px;'
-    document.body.appendChild(btn);
+    parent.appendChild(btn);
   }
 
   //Create CALLBACK script
@@ -133,7 +139,7 @@ function BOT_CreateCtrlUI() {
     BOTscript.textContent = 'socket.on("syncCallback", function(data) {'
       + 'LOAD_DATA(data);'
       + '});';
-    document.body.appendChild(BOTscript);
+    parent.appendChild(BOTscript);
   }
 }
 
@@ -145,8 +151,7 @@ function GET_GM_VAL(name) {
     $("#GM_GET").attr("name", name);
     getter.onclick();
     var res = $("#GM_GET").attr("value");
-    $("#GM_GET").attr("value", undefined);
-    $("#GM_GET").attr("name", undefined);
+    $("#GM_GET").removeAttr("value name");
     return res;
   } else {
     return null;
@@ -159,8 +164,7 @@ function SET_GM_VAL(name, value) {
     $("#GM_SET").attr("name", name);
     $("#GM_SET").attr("value", value);
     setter.onclick();
-    $("#GM_SET").attr("name", undefined);
-    $("#GM_SET").attr("value", undefined);
+    $("#GM_SET").removeAttr("value name");
     return true;
   } else {
     return false;
