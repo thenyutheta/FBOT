@@ -69,8 +69,7 @@ var breaked = false;
 
 var cfg_text_height = "70px"
 
-function BOT_CreateCtrlUI()
-{
+function BOT_CreateCtrlUI() {
   //Ez_Cfg_Area
   if (document.getElementById('FBOT_CONF') == null) {
     let tex = document.createElement('textArea');
@@ -294,7 +293,9 @@ function LOAD_DATA(data) {
         DestroySpam();
         setTimeout(POST_MAIN(info + '\n' + REPLACEDATA(GetText(BotSpamStartText), list, SPAMSTART)), PostWait);
         sender = setInterval(function () { SPAM_POST(info + '\n' + GetText(BotSpamText)) }, SpamInterval);
-        breaker = setTimeout(DestroySpam, SpamTimeOut);
+        if (SpamTimeOut >= 0) {
+          breaker = setTimeout(DestroySpam, SpamTimeOut);
+        }
         return;
       }
     }

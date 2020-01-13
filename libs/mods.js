@@ -22,6 +22,55 @@ function rollDice(formula) {
     }
   });
 }
+
+if (document.getElementById('FMOD_RESET_IGNORE') == null) {
+  let btn = document.createElement("button");
+  btn.textContent = "ResetIgnore";
+  btn.onclick = FMOD_RESET_IGNORE;
+  btn.style.width = "90px";
+  btn.style.height = "26px";
+  btn.id = "FMOD_RESET_IGNORE";
+  $("#message_menu").append(btn)
+  if (ignoredSessionIds[0] == "") {
+    ignoredSessionIds.splice(0, 1);
+  }
+}
+
+
+function FMOD_RESET_IGNORE() {
+  if (ignoredSessionIds.length == 0) {
+    alert("無視している人がいません。");
+    return;
+  }
+  if (!confirm(ignoredSessionIds.length + "人の無視を解除しますか？")) {
+    return;
+  }
+  var isis_cp = ignoredSessionIds.slice();
+  for (var l = 0; l < isis_cp.length; l++) {
+    var lcp = l;
+    $.ajax({
+      url: '/' + profileId + '/ignore_user.php',
+      type: 'POST',
+      dataType: 'text',
+      data: { 'accept_id': isis_cp[lcp] },
+      success: function (result) {
+        if (result == 'accepted') {
+          for (var i = 0; i < ignoredSessionIds.length; i++) {
+            if (isis_cp[lcp] == ignoredSessionIds[i]) {
+              ignoredSessionIds.splice(i, 1);
+              break;
+            }
+          }
+        }
+        refreshOnlineUsersView();
+        if (isMobile == 1)
+          refreshOnlineUsersCounter();
+        getFeed(0, 0);
+      },
+    })
+  }
+}
+
 //5pix
 try { pictureDropzone.options.maxFiles = 5; } catch (e) { }
 
@@ -34,19 +83,20 @@ $("#upgrade_room_menu").remove();
 
 //sound_plus
 if (document.getElementById('FMOD_AUDIO') == null) {
-  var aud = document.createElement('audio');
+  let aud = document.createElement('audio');
   aud.id = 'FMOD_AUDIO';
   aud.src = location.href.replace("sp/", "") + "sounds/s2.mp3";
   aud.style = "display:none";
   document.body.appendChild(aud);
-}
-function EXAPI_GET_POST_DATA_PARAM_LIST(list){
-  if (list[0][7] != sessionId && isMobile) {
-    document.getElementById('FMOD_AUDIO').play();
+
+  EXAPI_GET_POST_DATA_PARAM_LIST = function (list) {
+    if (list[0][7] != sessionId && isMobile) {
+      document.getElementById('FMOD_AUDIO').play();
+    }
   }
 }
 
-function API_POST(text, IsSp = 0, category = 0){
+function API_POST(text, IsSp = 0, category = 0) {
   $.ajax({
     url: Target,
     type: 'POST',
