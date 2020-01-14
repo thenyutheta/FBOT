@@ -44,7 +44,7 @@ if (document.getElementById('BOOT_CONF_SAVE') == null) {
   let btn = document.createElement('button');
   btn.textContent = 'SAVE';
   btn.id = 'BOOT_CONF_SAVE';
-  btn.onclick = function(){ MOD_SET_GM_VAL("config_boot_config", $('#BOOT_CONF_TEX').val()); alert("Saved!");}
+  btn.onclick = function () { MOD_SET_GM_VAL("config_boot_config", $('#BOOT_CONF_TEX').val()); alert("Saved!"); }
   btn.style = 'position:fixed;bottom:5px;left:108px;z-index:9;height:30px;width:70px; font-size:12px;'
   boot_parent.appendChild(btn);
 }
@@ -64,7 +64,10 @@ function BOOT_DATA_LOADER() {
   var boot_cfg_data = MOD_GET_GM_VAL("config_boot_config");
   if (boot_cfg_data != null) {
     $('#BOOT_CONF_TEX').val(boot_cfg_data);
+  } else {
+    $('#BOOT_CONF_TEX').val(DEF_BOOT_CONF);
   }
+
   try {
     eval($('#BOOT_CONF_TEX').val());
   } catch (e) {
@@ -83,10 +86,6 @@ function BOOT_DATA_LOADER() {
   }
   if (BG_PUBLIC_NOTE != null) {
     $("#note_under_online_users").css("background-image", "url(" + +BG_USERS + ")");
-  }
-
-  if (boot_cfg_data == null) {
-    $('#BOOT_CONF_TEX').val(DEF_BOOT_CONF);
   }
   //$(".comment").css("background-image", "url()");
 }
