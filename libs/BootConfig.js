@@ -77,6 +77,7 @@ function BOOT_DATA_LOADER() {
 
   if (BG_BODY != null) {
     $("body").css("background-image", "url(" + BG_BODY + ")");
+    $(".ui-page").css("background-image", "url(" + BG_BODY + ")");
   }
   if (BG_USERS != null) {
     $("#online_users_frame").css("background-image", "url(" + +BG_USERS + ")");
