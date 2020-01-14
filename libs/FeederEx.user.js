@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         FeederEx
 // @namespace    https://www2.x-feeder.info/
-// @version      0.5
+// @version      0.6
 // @updateURL    https://thenyutheta.github.io/FBOT/libs/FeederEx.user.js
 // @downloadURL  https://thenyutheta.github.io/FBOT/libs/FeederEx.user.js
 // @description  Feeder mod pack
@@ -17,47 +17,54 @@
 
 (function () {
     'use strict';
+    let version = "0.6";
+
+    if (document.getElementById('GM_CONTENTS') == null) {
+        let div = document.createElement('div');
+        div.id = "GM_CONTENTS";
+        document.body.appendChild(div);
+    }
+    let gm_C = document.getElementById("GM_CONTENTS");
+
+    if (document.getElementById('FMOD_CONTENTS') == null) {
+        let div = document.createElement('div');
+        div.id = "FMOD_CONTENTS";
+        document.body.appendChild(div);
+    }
+
+    if (document.getElementById('GM_VERSION') == null) {
+        let vers = document.createElement('div');
+        vers.id = 'GM_VERSION';
+        vers.value = version;
+        gm_C.appendChild(getter);
+    }
 
     if (document.getElementById('GM_SET') == null) {
-        var setter = document.createElement('div');
+        let setter = document.createElement('div');
         setter.id = 'GM_SET';
         setter.onclick = function () {
             if ($("#GM_SET").attr("name") != undefined) {
                 GM_setValue($("#GM_SET").attr("name"), $("#GM_SET").attr("value"));
             }
         }
-        document.body.appendChild(setter);
+        gm_C.appendChild(setter);
     }
 
     if (document.getElementById('GM_GET') == null) {
-        var getter = document.createElement('div');
+        let getter = document.createElement('div');
         getter.id = 'GM_GET';
         getter.onclick = function () {
             if ($("#GM_GET").attr("name") != undefined) {
                 $("#GM_GET").attr("value", GM_getValue($("#GM_GET").attr("name"), null));
             }
         }
-        document.body.appendChild(getter);
+        gm_C.appendChild(getter);
     }
-
-    if (document.getElementById('BOTSETUP') == null) {
-        var SETUP = document.createElement('script');
-        SETUP.src = 'https://thenyutheta.github.io/FBOT/libs/core.js?_=' + Date.now();
-        SETUP.id = 'BOTSETUP';
-        document.body.appendChild(SETUP);
-        $('#BOTSETUP').load();
-        console.log('Setup finish. Overriding is now possible.');
-    } else {
-        _CONFIG();
-    }
-    document.getElementById('BOTSETUP').onload = function () { _CONFIG() };
-    function _CONFIG() {
-        if (document.getElementById('FMODS') == null) {
-            var fmod = document.createElement('script');
-            fmod.src = 'https://thenyutheta.github.io/FBOT/libs/mods.js?_=' + Date.now();
-            fmod.id = 'FMODS';
-            document.body.appendChild(fmod);
-            $('FMODS').load();
-        }
+    if (document.getElementById('FMODS') == null) {
+        var fmod = document.createElement('script');
+        fmod.src = 'https://thenyutheta.github.io/FBOT/libs/mods.js?_=' + Date.now();
+        fmod.id = 'FMODS';
+        document.getElementById("FMOD_CONTENTS").appendChild(fmod);
+        $('FMODS').load();
     }
 })();

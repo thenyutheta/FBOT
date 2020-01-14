@@ -68,14 +68,14 @@ var breaked = false;
 //$("link[rel*=shortcut]").attr("href", "https://thenyutheta.github.io/FBOT/favicon.png");
 
 var cfg_text_height = "70px"
+var bt_parent = document.getElementById("BOT_AREA_DIV");
 
 function BOT_CreateCtrlUI() {
-  if (document.getElementById('FBOT_CTRL_UI_DIV') == null) {
+  if (bt_parent == null) {
     let div = document.createElement('div');
-    div.id = 'FBOT_CTRL_UI_DIV';
+    div.id = 'BOT_AREA_DIV';
     document.body.appendChild(div);
   }
-  var parent = document.getElementById("FBOT_CTRL_UI_DIV");
 
   //Ez_Cfg_Area
   if (document.getElementById('FBOT_CONF') == null) {
@@ -83,7 +83,7 @@ function BOT_CreateCtrlUI() {
     tex.id = 'FBOT_CONF';
     tex.rows = 5;
     tex.style = 'position:fixed;bottom:40px;z-index:9;height:' + cfg_text_height + ';width:100%;font-size:12px;'
-    parent.appendChild(tex);
+    bt_parent.appendChild(tex);
   }
   //set value
   {
@@ -101,7 +101,7 @@ function BOT_CreateCtrlUI() {
     btn.id = 'FBOT_CONF_RESET';
     btn.onclick = CFG_RESET;
     btn.style = 'position:fixed;bottom:5px;left:185px;z-index:9;height:30px;width:70px;font-size:12px;'
-    parent.appendChild(btn);
+    bt_parent.appendChild(btn);
   }
   //expand btn
   if (document.getElementById('FBOT_EXPAND') == null) {
@@ -110,7 +110,7 @@ function BOT_CreateCtrlUI() {
     btn.id = 'FBOT_EXPAND';
     btn.onclick = CFG_EXPAND_TOGGLE;
     btn.style = 'position:fixed;bottom:5px;left:260px;z-index:9;height:30px;width:70px;font-size:12px;'
-    parent.appendChild(btn);
+    bt_parent.appendChild(btn);
   }
   //boot btn
   if (document.getElementById('FBOT_CTRL') == null) {
@@ -120,7 +120,7 @@ function BOT_CreateCtrlUI() {
     btn.onclick = BOT_CREATE;
     btn.style = 'position:fixed;bottom:5px;left:35px;z-index:9;height:30px;width:70px;font-size:12px;'
     btn.style.color = "#000000";
-    parent.appendChild(btn);
+    bt_parent.appendChild(btn);
   }
   //show / hide
   if (document.getElementById('FBOT_CFG_CTRL') == null) {
@@ -129,17 +129,22 @@ function BOT_CreateCtrlUI() {
     btn.id = 'FBOT_CFG_CTRL';
     btn.onclick = CFG_TOGGLE;
     btn.style = 'position:fixed;bottom:5px;left:110px;z-index:9;height:30px;width:70px; font-size:12px;'
-    parent.appendChild(btn);
+    bt_parent.appendChild(btn);
   }
 
   //Create CALLBACK script
-  if (document.getElementById('BOT_SRC') == null) {
-    let BOTscript = document.createElement('script');
-    BOTscript.id = 'BOT_SRC';
-    BOTscript.textContent = 'socket.on("syncCallback", function(data) {'
-      + 'LOAD_DATA(data);'
-      + '});';
-    parent.appendChild(BOTscript);
+  if (document.getElementById('FMOD_CALL_BACK') == null) {
+
+    if (document.getElementById('BOT_SRC') == null) {
+      let BOTscript = document.createElement('script');
+      BOTscript.id = 'BOT_SRC';
+      BOTscript.textContent = 'socket.on("syncCallback", function(data) {'
+        + 'LOAD_DATA(data);'
+        + '});';
+      bt_parent.appendChild(BOTscript);
+    }
+  }else{
+    callbacks.push(LOAD_DATA);
   }
 }
 
@@ -232,7 +237,7 @@ function BOT_INIT() {
     var btn = document.createElement('button');
     btn.id = 'FBOT_CTRL';
     btn.style = 'position:fixed;bottom:10px;left:10px;z-index:9;height:24px;width:99px'
-    document.body.appendChild(btn);
+    bt_parent.appendChild(btn);
   }
   ctrl.textContent = 'BotEnd';
   ctrl.style.color = "#FF0000";
@@ -248,7 +253,6 @@ function BOT_DEBUG_DATA(data) { }
 
 function EXAPI_GET_ALL_DATA(data) { }
 function EXAPI_GET_POST_DATA(data) { }
-function EXAPI_GET_POST_DATA_PARAM_LIST(data) { }
 
 //コールバックメイン
 function LOAD_DATA(data) {
@@ -256,10 +260,9 @@ function LOAD_DATA(data) {
   //投稿以外なら帰る
   if (data.code != 3) { return; }
   EXAPI_GET_POST_DATA(data);
-  var list = getFeedArray(data.param);
-  EXAPI_GET_POST_DATA_PARAM_LIST(list);
   //終了していたら帰る
   if (breaked) { return; }
+  var list = getFeedArray(data.param);
   BOT_DEBUG_DATA(data);
   //取得
   var PostName = list[0][3].replace(/<(.*?)>/g, "");

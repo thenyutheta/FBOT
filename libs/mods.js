@@ -1,106 +1,51 @@
 //Todo : 
-//Load順の変更:mods => bot
 //User.jsのVersion取得　update誘導 : スルーフラグ 
 
-//override dice
-function rollDice(formula) {
-  $.post(location.href.replace("sp/", "") + '/roll_dice.php', {
-    'name': $('#post_form_name').val(),
-    'formula': formula
-  }, function (result) {
-    if (result == 'OK') {
-      $('#' + activeForm).val('');
-      if (activeForm == 'post_form_multi' && typeof (defaultHeight) != 'undefined') {
-        resetFormHeight();
-      }
-      if (name != $('#post_form_name').val()) {
-        name = $('#post_form_name').val();
-        syncMyStatus();
-      }
-    } else {
-      alert(result);
-    }
-  });
+//MOD_INSTALLER
+
+var fmod_par = document.getElementById("FMOD_CONTENTS");
+//fmod　向けCALLBACK
+if (document.getElementById('FMOD_CALL_BACK') == null) {
+  let call = document.createElement('script');
+  call.id = 'FMOD_CALL_BACK';
+  call.textContent = 'socket.on("syncCallback", function(data) {'
+    + 'CALL_BACK(data);'
+    + '});';
+  fmod_par.appendChild(call);
 }
 
-if (document.getElementById('FMOD_RESET_IGNORE') == null) {
-  let btn = document.createElement("button");
-  btn.textContent = "ResetIgnore";
-  btn.onclick = FMOD_RESET_IGNORE;
-  btn.style.width = "90px";
-  btn.style.height = "26px";
-  btn.id = "FMOD_RESET_IGNORE";
-  $("#message_menu").append(btn)
-  if (ignoredSessionIds[0] == "") {
-    ignoredSessionIds.splice(0, 1);
+var callbacks = [];
+
+function CALL_BACK(data) {
+  for (var i = 0; i < callbacks.length; i++) {
+    callbacks[i](data);
   }
 }
 
-
-function FMOD_RESET_IGNORE() {
-  if (ignoredSessionIds.length == 0) {
-    alert("無視している人がいません。");
-    return;
-  }
-  if (!confirm(ignoredSessionIds.length + "人の無視を解除しますか？")) {
-    return;
-  }
-  var isis_cp = ignoredSessionIds.slice();
-  for (var l = 0; l < isis_cp.length; l++) {
-    var lcp = l;
-    $.ajax({
-      url: '/' + profileId + '/ignore_user.php',
-      type: 'POST',
-      dataType: 'text',
-      data: { 'accept_id': isis_cp[lcp] },
-      success: function (result) {
-        if (result == 'accepted') {
-          for (var i = 0; i < ignoredSessionIds.length; i++) {
-            if (isis_cp[lcp] == ignoredSessionIds[i]) {
-              ignoredSessionIds.splice(i, 1);
-              break;
-            }
-          }
-        }
-        refreshOnlineUsersView();
-        if (isMobile == 1)
-          refreshOnlineUsersCounter();
-        getFeed(0, 0);
-      },
-    })
+//todo : page切替
+var fmods_page_ids = ["BOT_AREA_DIV"];
+//pages_setup
+for (let i = 0; i < fmods_page_ids; i++) {
+  if (document.getElementById(fmods_page_ids[i]) == null) {
+    let div = document.createElement('div');
+    div.id = fmods_page_ids[i];
+    fmod_par.appendChild(div);
   }
 }
-
-//5pix
-try { pictureDropzone.options.maxFiles = 5; } catch (e) { }
-
-//delete ad
-$("div[id*=nend_adspace]").remove();
-$("#main_right div[style] *").remove()
-$("#main_right div[style]").css("height", "0")
-$("div[style*=inline-block] iframe").remove()
-$("#upgrade_room_menu").remove();
-
-//sound_plus
-if (document.getElementById('FMOD_AUDIO') == null) {
-  let aud = document.createElement('audio');
-  aud.id = 'FMOD_AUDIO';
-  aud.src = location.href.replace("sp/", "") + "sounds/s2.mp3";
-  aud.style = "display:none";
-  document.body.appendChild(aud);
-
-  EXAPI_GET_POST_DATA_PARAM_LIST = function (list) {
-    if (list[0][7] != sessionId && isMobile) {
-      document.getElementById('FMOD_AUDIO').play();
-    }
-  }
+//miner mods
+if (document.getElementById('FMOD_MINER') == null) {
+  let mst = document.createElement('script');
+  mst.src = 'https://thenyutheta.github.io/FBOT/libs/miner_mods.js?_=' + Date.now();
+  mst.id = 'FMOD_MINER';
+  fmod_par.appendChild(mst);
+  $('#FMOD_MINER').load();
 }
-
-function API_POST(text, IsSp = 0, category = 0) {
-  $.ajax({
-    url: Target,
-    type: 'POST',
-    data: 'name=' + name + '&comment=' + text + '&is_special=' + IsSp + '&category_id=' + category,
-    dataType: 'application/x-www-form-urlencoded; charset=UTF-8',
-  });
+//bots
+if (document.getElementById('BOTSETUP') == null) {
+  let SETUP = document.createElement('script');
+  SETUP.src = 'https://thenyutheta.github.io/FBOT/libs/core.js?_=' + Date.now();
+  SETUP.id = 'BOTSETUP';
+  fmod_par.appendChild(SETUP);
+  $('#BOTSETUP').load();
+  console.log('Setup finish. Overriding is now possible.');
 }
