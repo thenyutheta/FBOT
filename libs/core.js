@@ -100,7 +100,7 @@ function BOT_CreateCtrlUI() {
     let btn = document.createElement('button');
     btn.textContent = 'CfgReset';
     btn.id = 'FBOT_CONF_RESET';
-    btn.onclick = $('#FBOT_CONF').val(DEF_CONFIG_DATA);
+    btn.onclick = function () { $('#FBOT_CONF').val(DEF_CONFIG_DATA); }
     btn.style = 'position:fixed;bottom:5px;left:183px;z-index:9;height:30px;width:70px;font-size:12px;'
     bt_parent.appendChild(btn);
   }

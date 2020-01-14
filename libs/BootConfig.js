@@ -34,7 +34,7 @@ if (document.getElementById('BOOT_CONF_RESET') == null) {
   let btn = document.createElement('button');
   btn.textContent = 'Reset';
   btn.id = 'BOOT_CONF_RESET';
-  btn.onclick = $('#BOOT_CONF_TEX').val(DEF_BOOT_CONF);
+  btn.onclick = function () { $('#BOOT_CONF_TEX').val(DEF_BOOT_CONF); }
   btn.style = 'position:fixed;bottom:5px;left:183px;z-index:9;height:30px;width:70px;font-size:12px;'
   boot_parent.appendChild(btn);
 }
