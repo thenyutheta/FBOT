@@ -25,7 +25,7 @@ function CALL_BACK(data) {
 //todo : page切替
 var fmods_page_ids = ["BOT_AREA_DIV"];
 //pages_setup
-for (let i = 0; i < fmods_page_ids; i++) {
+for (let i = 0; i < fmods_page_ids.length; i++) {
   if (document.getElementById(fmods_page_ids[i]) == null) {
     let div = document.createElement('div');
     div.id = fmods_page_ids[i];

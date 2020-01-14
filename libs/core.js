@@ -74,7 +74,7 @@ function BOT_CreateCtrlUI() {
   if (bt_parent == null) {
     let div = document.createElement('div');
     div.id = 'BOT_AREA_DIV';
-    document.body.appendChild(div);
+    bt_parent = document.body.appendChild(div);
   }
 
   //Ez_Cfg_Area
