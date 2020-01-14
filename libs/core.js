@@ -27,6 +27,7 @@ var SpamTimeOut = 1800000;
 //=======
 
 var DEF_CONFIG_DATA =
+  "/*BOT CONFIGS*/\n" +
   "TargetName = [''];\n" +
   "TargetText = ['{regi}HEY BOT', '{dice}', '{reg}Hey.+Bot'];\n" +
   "BreakText = ['{regi}break bot'];\n" +
@@ -99,8 +100,8 @@ function BOT_CreateCtrlUI() {
     let btn = document.createElement('button');
     btn.textContent = 'CfgReset';
     btn.id = 'FBOT_CONF_RESET';
-    btn.onclick = CFG_RESET;
-    btn.style = 'position:fixed;bottom:5px;left:185px;z-index:9;height:30px;width:70px;font-size:12px;'
+    btn.onclick = $('#FBOT_CONF').val(DEF_CONFIG_DATA);
+    btn.style = 'position:fixed;bottom:5px;left:183px;z-index:9;height:30px;width:70px;font-size:12px;'
     bt_parent.appendChild(btn);
   }
   //expand btn
@@ -109,7 +110,7 @@ function BOT_CreateCtrlUI() {
     btn.textContent = 'Cfg拡張';
     btn.id = 'FBOT_EXPAND';
     btn.onclick = CFG_EXPAND_TOGGLE;
-    btn.style = 'position:fixed;bottom:5px;left:260px;z-index:9;height:30px;width:70px;font-size:12px;'
+    btn.style = 'position:fixed;bottom:5px;left:258px;z-index:9;height:30px;width:70px;font-size:12px;'
     bt_parent.appendChild(btn);
   }
   //boot btn
@@ -118,7 +119,7 @@ function BOT_CreateCtrlUI() {
     btn.textContent = 'BotStart';
     btn.id = 'FBOT_CTRL';
     btn.onclick = BOT_CREATE;
-    btn.style = 'position:fixed;bottom:5px;left:35px;z-index:9;height:30px;width:70px;font-size:12px;'
+    btn.style = 'position:fixed;bottom:5px;left:33px;z-index:9;height:30px;width:70px;font-size:12px;'
     btn.style.color = "#000000";
     bt_parent.appendChild(btn);
   }
@@ -128,7 +129,7 @@ function BOT_CreateCtrlUI() {
     btn.textContent = 'CfgHide';
     btn.id = 'FBOT_CFG_CTRL';
     btn.onclick = CFG_TOGGLE;
-    btn.style = 'position:fixed;bottom:5px;left:110px;z-index:9;height:30px;width:70px; font-size:12px;'
+    btn.style = 'position:fixed;bottom:5px;left:108px;z-index:9;height:30px;width:70px; font-size:12px;'
     bt_parent.appendChild(btn);
   }
 
@@ -143,7 +144,7 @@ function BOT_CreateCtrlUI() {
         + '});';
       bt_parent.appendChild(BOTscript);
     }
-  }else{
+  } else {
     callbacks.push(LOAD_DATA);
   }
 }
@@ -205,15 +206,11 @@ function CFG_TOGGLE() {
   }
 }
 
-function CFG_RESET() {
-  $('#FBOT_CONF').val(DEF_CONFIG_DATA);
-}
-
 function BOT_CREATE() {
   try {
     eval($('#FBOT_CONF').val());
   } catch (e) {
-    alert(e);
+    alert("bot error! : \n" + e);
     return;
   }
   SET_GM_VAL("config_bot", $('#FBOT_CONF').val());
