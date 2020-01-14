@@ -7,7 +7,7 @@ var boot_parent = document.getElementById("BOOT_CONFIG_DIV");
 
 var DEF_BOOT_CONF =
   "/*BOOT_LOAD_CONFIGS*/\n" +
-  "BG_BODY = https://i.ytimg.com/an_webp/BaB0e3O08I4/mqdefault_6s.webp?du=3000&sqp=CKzl9vAF&rs=AOn4CLBww-iZP5d1D1C_1tUiCzqGkHAVxw\n";
+  "BG_BODY = \"https://i.ytimg.com/an_webp/BaB0e3O08I4/mqdefault_6s.webp?du=3000&sqp=CKzl9vAF&rs=AOn4CLBww-iZP5d1D1C_1tUiCzqGkHAVxw\"\n";
 
 var boot_cfg_text_height = "70px"
 //area
