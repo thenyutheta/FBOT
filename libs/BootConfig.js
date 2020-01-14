@@ -80,13 +80,13 @@ function BOOT_DATA_LOADER() {
     $(".ui-page").css("background-image", "url(" + BG_BODY + ")");
   }
   if (BG_USERS != null) {
-    $("#online_users_frame").css("background-image", "url(" + +BG_USERS + ")");
+    $("#online_users_frame").css("background-image", "url(" + BG_USERS + ")");
   }
   if (BG_POST_FRAME != null) {
     $("#post_form_frame").css("background-image", "url(" + BG_POST_FRAME + ")");
   }
   if (BG_PUBLIC_NOTE != null) {
-    $("#note_under_online_users").css("background-image", "url(" + +BG_USERS + ")");
+    $("#note_under_online_users").css("background-image", "url(" + BG_PUBLIC_NOTE + ")");
   }
   //$(".comment").css("background-image", "url()");
 }
