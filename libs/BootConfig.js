@@ -2,6 +2,7 @@ var BG_BODY = null;
 var BG_USERS = null;
 var BG_POST_FRAME = null;
 var BG_PUBLIC_NOTE = null;
+var BG_COMMENT = null;
 
 var boot_parent = document.getElementById("BOOT_CONFIG_DIV");
 
@@ -88,6 +89,31 @@ function BOOT_DATA_LOADER() {
   if (BG_PUBLIC_NOTE != null) {
     $("#note_under_online_users").css("background-image", "url(" + BG_PUBLIC_NOTE + ")");
   }
-  //$(".comment").css("background-image", "url()");
+  BC_Set_Comment_BG();
 }
 BOOT_DATA_LOADER();
+
+function BC_MO_CallBack(records){
+  var comment_bg_ = false;
+  for(var i = 0;i < records.length;i++){
+    if(records[i].type == "childList"){
+      for(var l = 0;l <records[i].addedNodes.length;l++){
+        if(records[i].addedNodes[l].id != undefined){
+          comment_bg_ = true;
+        }
+      }
+    }
+  }
+  
+  if(comment_bg_){
+    BC_Set_Comment_BG();
+  }
+}
+
+MO_callbacks.push(BC_MO_CallBack);
+
+function BC_Set_Comment_BG() {
+  if (BG_COMMENT != null) {
+    $(".comment").css("background-image", "url(" + BG_COMMENT + ")");
+  }
+}

@@ -29,7 +29,23 @@ function CALL_BACK(data) {
   }
 }
 
-var fmods_page_ids = ["FIRST_EMPTY_DIV", "BOT_AREA_DIV", "BOOT_CONFIG_DIV","LAST_EMPTY_DIV"];
+var MO_callbacks = [];
+var MObserver_Target = document.getElementById('feed_list');
+var MObserver = new MutationObserver(records => {
+  for(var i = 0;i < MO_callbacks.length;i++){
+    MO_callbacks[i](records);
+  }
+});
+
+MObserver.observe(MObserver_Target, {
+  childList: true,
+  attributes: true,
+  subtree: true,
+  characterData: true,
+  characterDataOldValue: true
+})
+
+var fmods_page_ids = ["FIRST_EMPTY_DIV", "BOT_AREA_DIV", "BOOT_CONFIG_DIV", "LAST_EMPTY_DIV"];
 var now_page = 1;
 //pages_setup
 for (let i = 0; i < fmods_page_ids.length; i++) {
