@@ -1,23 +1,23 @@
 // ==UserScript==
 // @name         FeederEx
 // @namespace    https://www2.x-feeder.info/
-// @version      0.61
+// @version      0.62
 // @updateURL    https://thenyutheta.github.io/FBOT/libs/FeederEx.user.js
 // @downloadURL  https://thenyutheta.github.io/FBOT/libs/FeederEx.user.js
-// @description  Feeder mod pack
+// @description  Feeder mods pack
 // @author       theta
-// @match        http*://www2.x-feeder.info/*/
-// @match        http*://www2.x-feeder.info/*/sp/
-// @match        http*://www2.x-feeder.info/index.html
-// @match        http*://www2.x-feeder.info/*/sp/index.html
-// @run-at document-end
-// @grant GM_setValue
-// @grant GM_getValue
+// @match        http*://www1.x-feeder.info/*
+// @match        http*://www2.x-feeder.info/*
+// @exclude      http*://www1.x-feeder.info/*/settings/*
+// @exclude      http*://www2.x-feeder.info/*/settings/*
+// @run-at       document-end
+// @grant        GM_setValue
+// @grant        GM_getValue
 // ==/UserScript==
 
 (function () {
     'use strict';
-    let version = "0.61";
+    let version = "0.62";
 
     if (document.getElementById('GM_CONTENTS') == null) {
         let div = document.createElement('div');
@@ -31,7 +31,7 @@
         div.id = "FMOD_CONTENTS";
         document.body.appendChild(div);
     }
-
+    //Version info
     if (document.getElementById('GM_VERSION') == null) {
         let vers = document.createElement('div');
         vers.id = 'GM_VERSION';
@@ -39,6 +39,7 @@
     }
     $('#GM_VERSION').attr("value", version);
 
+    //gm_set interface
     if (document.getElementById('GM_SET') == null) {
         let setter = document.createElement('div');
         setter.id = 'GM_SET';
@@ -49,7 +50,7 @@
         }
         gm_C.appendChild(setter);
     }
-
+    //gm_get interface
     if (document.getElementById('GM_GET') == null) {
         let getter = document.createElement('div');
         getter.id = 'GM_GET';
@@ -60,6 +61,7 @@
         }
         gm_C.appendChild(getter);
     }
+    //install mods
     if (document.getElementById('FMODS') == null) {
         var fmod = document.createElement('script');
         fmod.src = 'https://thenyutheta.github.io/FBOT/libs/mods.js?_=' + Date.now();

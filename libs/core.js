@@ -56,7 +56,7 @@ var DEF_CONFIG_DATA =
 
 //not configs. don't edit.
 //POSTPHP URL
-var Target = location.href.replace("sp/", "") + '/post_feed.php';
+var Target = location.origin + "/" + profileId + '/post_feed.php';
 var info = '[BOTINFO]';
 
 //宣言

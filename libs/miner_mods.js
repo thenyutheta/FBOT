@@ -1,7 +1,7 @@
 
 //override dice
 function rollDice(formula) {
-  $.post(location.href.replace("sp/", "") + '/roll_dice.php', {
+  $.post(location.origin + "/" + profileId + '/roll_dice.php', {
     'name': $('#post_form_name').val(),
     'formula': formula
   }, function (result) {
@@ -33,7 +33,6 @@ if (document.getElementById('FMOD_RESET_IGNORE') == null) {
     ignoredSessionIds.splice(0, 1);
   }
 }
-
 
 function FMOD_RESET_IGNORE() {
   if (ignoredSessionIds.length == 0) {
@@ -68,9 +67,12 @@ function FMOD_RESET_IGNORE() {
     })
   }
 }
-
+//fix sp error
+if (typeof closePictureDropzone == 'undefined') {
+  function closePictureDropzone(d) { }
+}
 //5pix
-try { pictureDropzone.options.maxFiles = 5; } catch (e) { }
+if (typeof pictureDropzone != 'undefined') { pictureDropzone.options.maxFiles = 5; }
 
 //delete ad
 $("div[id*=nend_adspace]").remove();
@@ -83,7 +85,7 @@ $("#upgrade_room_menu").remove();
 if (document.getElementById('FMOD_AUDIO') == null) {
   let aud = document.createElement('audio');
   aud.id = 'FMOD_AUDIO';
-  aud.src = location.href.replace("sp/", "") + "sounds/s2.mp3";
+  aud.src = location.origin + "/" + profileId + "/sounds/s2.mp3";
   aud.style = "display:none";
   fmod_par.appendChild(aud);
 
@@ -105,6 +107,7 @@ function MM_ANTI_STYLE_BREAKER(d) {
   $(".comment").css("table-layout", "fixed");
   $(".comment").css("word-wrap", "break-word");
   $(".comment").css("width", "calc(100% - 14px)");
+  $(".comment").css("min-width", "100px");
 }
 
 MM_SHOW_WEBP(null);

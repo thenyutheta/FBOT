@@ -3,6 +3,7 @@ var BG_USERS = null;
 var BG_POST_FRAME = null;
 var BG_PUBLIC_NOTE = null;
 var BG_COMMENT = null;
+var BG_HEADER = null;
 
 var boot_parent = document.getElementById("BOOT_CONFIG_DIV");
 
@@ -88,6 +89,9 @@ function BOOT_DATA_LOADER() {
   }
   if (BG_PUBLIC_NOTE != null) {
     $("#note_under_online_users").css("background-image", "url(" + BG_PUBLIC_NOTE + ")");
+  }
+  if (BG_HEADER != null) {
+    $("div#header").css("background-image", "url(" + BG_HEADER + ")");
   }
   BC_Set_Comment_BG();
 }
