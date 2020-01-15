@@ -97,6 +97,8 @@ if (document.getElementById('FMOD_AUDIO') == null) {
   });
 }
 
+//init
+MM_ANTI_STYLE_BREAKER(null);
 MO_FeedPatchers.push(MM_ANTI_STYLE_BREAKER);
 
 
