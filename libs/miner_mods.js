@@ -74,8 +74,8 @@ try { pictureDropzone.options.maxFiles = 5; } catch (e) { }
 
 //delete ad
 $("div[id*=nend_adspace]").remove();
-$("#main_right div[style] *").remove()
-$("#main_right div[style]").css("height", "0")
+$("div#main_right div[style] *").remove()
+$("div#main_right div[style*='width: 300px; height: 250px;']").css("height", "0")
 $("div[style*=inline-block] iframe").remove()
 $("#upgrade_room_menu").remove();
 
@@ -88,7 +88,7 @@ if (document.getElementById('FMOD_AUDIO') == null) {
   fmod_par.appendChild(aud);
 
   callbacks.push(function (data) {
-    if(!isMobile){return;}
+    if(isMobile == 0){return;}
     if (data.code != 3) { return; }
     var list = getFeedArray(data.param);
     if (list[0][7] != sessionId) {

@@ -40,6 +40,7 @@ for (let i = 0; i < fmods_page_ids.length; i++) {
     fmod_par.appendChild(div);
   }
 }
+//Left btn
 if (document.getElementById('FMOD_PAGE_LEFT') == null) {
   let btn = document.createElement('button');
   btn.id = 'FMOD_PAGE_LEFT';
@@ -49,7 +50,7 @@ if (document.getElementById('FMOD_PAGE_LEFT') == null) {
   fmod_par.appendChild(btn);
 }
 var page_left_btn = document.getElementById('FMOD_PAGE_LEFT');
-
+//right btn
 if (document.getElementById('FMOD_PAGE_RIGHT') == null) {
   let btn = document.createElement('button');
   btn.id = 'FMOD_PAGE_RIGHT';
@@ -59,6 +60,7 @@ if (document.getElementById('FMOD_PAGE_RIGHT') == null) {
   fmod_par.appendChild(btn);
 }
 var page_right_btn = document.getElementById('FMOD_PAGE_RIGHT');
+
 function ChangePage(vector) {
   now_page += vector;
   UTIL_CLAMP(now_page, 0, fmods_page_ids.length - 1);
@@ -96,7 +98,7 @@ if (document.getElementById('BOTSETUP') == null) {
   $('#BOTSETUP').load();
   console.log('Setup finish. Overriding is now possible.');
 }
-
+//boot conf
 if (document.getElementById('BOOT_CONFIG') == null) {
   let cfg = document.createElement('script');
   cfg.src = 'https://thenyutheta.github.io/FBOT/libs/BootConfig.js?_=' + Date.now();
