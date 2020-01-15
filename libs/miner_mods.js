@@ -76,8 +76,8 @@ if (typeof pictureDropzone != 'undefined') { pictureDropzone.options.maxFiles = 
 
 //delete ad
 $("div[id*=nend_adspace]").remove();
-$("div#main_right div[style] *").remove()
-$("div#main_right div[style*='width: 300px; height: 250px;']").css("height", "0")
+$("div#main_right div[style] script[src]").parent().remove();
+$(window).off('scroll')
 $("div[style*=inline-block] iframe").remove()
 $("#upgrade_room_menu").remove();
 
