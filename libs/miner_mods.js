@@ -97,11 +97,11 @@ if (document.getElementById('FMOD_AUDIO') == null) {
   });
 }
 
-function API_POST(text, IsSp = 0, category = 0) {
-  $.ajax({
-    url: Target,
-    type: 'POST',
-    data: 'name=' + name + '&comment=' + text + '&is_special=' + IsSp + '&category_id=' + category,
-    dataType: 'application/x-www-form-urlencoded; charset=UTF-8',
-  });
+MO_FeedPatchers.push(MM_ANTI_STYLE_BREAKER);
+
+
+function MM_ANTI_STYLE_BREAKER(d) {
+  $(".comment").css("table-layout", "fixed");
+  $(".comment").css("word-wrap", "break-word");
+  $(".comment").css("width", "calc(100% - 14px)");
 }

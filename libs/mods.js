@@ -30,11 +30,37 @@ function CALL_BACK(data) {
 }
 
 var MO_callbacks = [];
-var MObserver_Target = document.getElementById('feed_list');
-var MObserver = new MutationObserver(records => {
+var MO_FeedPatchers_HIGH_LEVEL = [];
+var MO_FeedPatchers = [];
+function MObserver_CallBack(records){
   for(var i = 0;i < MO_callbacks.length;i++){
     MO_callbacks[i](records);
   }
+
+  //feeds_patcher
+  var added_feeds = false;
+  for (var i = 0; i < records.length; i++) {
+    if (records[i].type == "childList") {
+      for (var l = 0; l < records[i].addedNodes.length; l++) {
+        if (records[i].addedNodes[l].id != undefined) {
+          added_feeds = true;
+          for(var mfh = 0;mfh < MO_FeedPatchers_HIGH_LEVEL.length;mfh++){
+            MO_FeedPatchers_HIGH_LEVEL[mfh](records[i]);
+          }
+        }
+      }
+    }
+  }
+
+  if (added_feeds) {
+    for(var mfh = 0;mfh < MO_FeedPatchers.length;mfh++){
+      MO_FeedPatchers[mfh](records);
+    }
+  }
+}
+var MObserver_Target = document.getElementById('feed_list');
+var MObserver = new MutationObserver(records => {
+  MObserver_CallBack(records);
 });
 
 MObserver.observe(MObserver_Target, {
@@ -157,4 +183,13 @@ function UTIL_CLAMP(val, min, max) {
   } else {
     return val;
   }
+}
+
+function API_POST(text, IsSp = 0, category = 0) {
+  $.ajax({
+    url: Target,
+    type: 'POST',
+    data: 'name=' + name + '&comment=' + text + '&is_special=' + IsSp + '&category_id=' + category,
+    dataType: 'application/x-www-form-urlencoded; charset=UTF-8',
+  });
 }

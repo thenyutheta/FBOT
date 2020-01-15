@@ -93,26 +93,9 @@ function BOOT_DATA_LOADER() {
 }
 BOOT_DATA_LOADER();
 
-function BC_MO_CallBack(records){
-  var comment_bg_ = false;
-  for(var i = 0;i < records.length;i++){
-    if(records[i].type == "childList"){
-      for(var l = 0;l <records[i].addedNodes.length;l++){
-        if(records[i].addedNodes[l].id != undefined){
-          comment_bg_ = true;
-        }
-      }
-    }
-  }
-  
-  if(comment_bg_){
-    BC_Set_Comment_BG();
-  }
-}
+MO_FeedPatchers.push(BC_Set_Comment_BG);
 
-MO_callbacks.push(BC_MO_CallBack);
-
-function BC_Set_Comment_BG() {
+function BC_Set_Comment_BG(d) {
   if (BG_COMMENT != null) {
     $(".comment").css("background-image", "url(" + BG_COMMENT + ")");
   }
