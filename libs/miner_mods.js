@@ -88,7 +88,7 @@ if (document.getElementById('FMOD_AUDIO') == null) {
   fmod_par.appendChild(aud);
 
   callbacks.push(function (data) {
-    if(isMobile == 0){return;}
+    if (isMobile == 0) { return; }
     if (data.code != 3) { return; }
     var list = getFeedArray(data.param);
     if (list[0][7] != sessionId) {
@@ -101,9 +101,19 @@ if (document.getElementById('FMOD_AUDIO') == null) {
 MM_ANTI_STYLE_BREAKER(null);
 MO_FeedPatchers.push(MM_ANTI_STYLE_BREAKER);
 
-
 function MM_ANTI_STYLE_BREAKER(d) {
   $(".comment").css("table-layout", "fixed");
   $(".comment").css("word-wrap", "break-word");
   $(".comment").css("width", "calc(100% - 14px)");
+}
+
+MM_SHOW_WEBP(null);
+MO_FeedPatchers.push(MM_SHOW_WEBP);
+
+function MM_SHOW_WEBP(d) {
+  $("a[target] img[title]").parent().each(function (index) {
+    if ($(this).attr("href").endsWith(".")) {
+      $(this).children("img").attr("src", $(this).attr("href")).css("width", "140px")
+    }
+  });
 }

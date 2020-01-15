@@ -32,8 +32,8 @@ function CALL_BACK(data) {
 var MO_callbacks = [];
 var MO_FeedPatchers_HIGH_LEVEL = [];
 var MO_FeedPatchers = [];
-function MObserver_CallBack(records){
-  for(var i = 0;i < MO_callbacks.length;i++){
+function MObserver_CallBack(records) {
+  for (var i = 0; i < MO_callbacks.length; i++) {
     MO_callbacks[i](records);
   }
 
@@ -44,7 +44,7 @@ function MObserver_CallBack(records){
       for (var l = 0; l < records[i].addedNodes.length; l++) {
         if (records[i].addedNodes[l].id != undefined) {
           added_feeds = true;
-          for(var mfh = 0;mfh < MO_FeedPatchers_HIGH_LEVEL.length;mfh++){
+          for (var mfh = 0; mfh < MO_FeedPatchers_HIGH_LEVEL.length; mfh++) {
             MO_FeedPatchers_HIGH_LEVEL[mfh](records[i]);
           }
         }
@@ -53,7 +53,7 @@ function MObserver_CallBack(records){
   }
 
   if (added_feeds) {
-    for(var mfh = 0;mfh < MO_FeedPatchers.length;mfh++){
+    for (var mfh = 0; mfh < MO_FeedPatchers.length; mfh++) {
       MO_FeedPatchers[mfh](records);
     }
   }
