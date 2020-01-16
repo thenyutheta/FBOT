@@ -88,7 +88,9 @@ if (isMobile == 1) {
   callbacks.push(function (data) {
     if (data.code == 3) {
       let list = getFeedArray(data.param);
-      playSound(list[0][2]);
+      if (list[0][7] != sessionId) {
+        playSound(list[0][2]);
+      }
     } else if (data.code == 6 && data.param == sessionId) {
       playSound(3);
     }
@@ -107,10 +109,10 @@ MM_ANTI_STYLE_BREAKER(null);
 MO_FeedPatchers.push(MM_ANTI_STYLE_BREAKER);
 
 function MM_ANTI_STYLE_BREAKER(d) {
-  $(".comment").css("table-layout", "fixed");
-  $(".comment").css("word-wrap", "break-word");
-  $(".comment").css("width", "calc(100% - 14px)");
-  $(".comment").css("min-width", "100px");
+  $("#feed_list .comment").css("table-layout", "fixed");
+  $("#feed_list .comment").css("word-wrap", "break-word");
+  $("#feed_list .comment").css("width", "calc(100% - 14px)");
+  $("#feed_list .comment").css("min-width", "100px");
 }
 
 MM_SHOW_WEBP(null);

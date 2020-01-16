@@ -5,6 +5,8 @@ var BG_PUBLIC_NOTE = null;
 var BG_COMMENT = null;
 var BG_HEADER = null;
 
+var MuteWord = [];
+
 var boot_parent = document.getElementById("BOOT_CONFIG_DIV");
 //debug
 if(boot_parent == null){
@@ -139,6 +141,8 @@ function ExecuteBootConfig(boot) {
     $("div#header").css("background-image", "url(" + BG_HEADER + ")");
   }
   BC_Set_Comment_BG();
+
+  BC_WordMuter();
 }
 
 ExecuteBootConfig(true);
@@ -147,6 +151,20 @@ MO_FeedPatchers.push(BC_Set_Comment_BG);
 
 function BC_Set_Comment_BG(d) {
   if (BG_COMMENT != null) {
-    $(".comment").css("background-image", "url(" + BG_COMMENT + ")");
+    $("#feed_list .comment").css("background-image", "url(" + BG_COMMENT + ")");
   }
+}
+
+MO_FeedPatchers.push(BC_WordMuter);
+
+function BC_WordMuter(d){
+  ("#feed_list .comment").filter(function(index){
+    let text = $("tr td[colspan=2]", this).text();
+    for(let i = 0;i < MuteWord.length;i++){
+      if(text.indexOf(MuteWord[i]) > -1){
+        return true;
+      }
+    }
+    return false;
+  }).parent().parent().css("display", "none")
 }
