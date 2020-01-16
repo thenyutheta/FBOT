@@ -146,23 +146,29 @@ if (document.getElementById('FMOD_MINER') == null) {
   fmod_par.appendChild(mst);
   $('#FMOD_MINER').load();
 }
-//bots
-if (document.getElementById('BOTSETUP') == null) {
-  let SETUP = document.createElement('script');
-  SETUP.src = 'https://thenyutheta.github.io/FBOT/libs/core.js?_=' + Date.now();
-  SETUP.id = 'BOTSETUP';
-  fmod_par.appendChild(SETUP);
-  $('#BOTSETUP').load();
-  console.log('Setup finish. Overriding is now possible.');
-}
-//boot conf
-if (document.getElementById('BOOT_CONFIG') == null) {
-  let cfg = document.createElement('script');
-  cfg.src = 'https://thenyutheta.github.io/FBOT/libs/BootConfig.js?_=' + Date.now();
-  cfg.id = 'BOOT_CONFIG';
-  fmod_par.appendChild(cfg);
-  $('#BOOT_CONFIG').load();
-}
+
+$('#FMOD_MINER').on("load", function () {
+  //bots
+  if (document.getElementById('BOTSETUP') == null) {
+    let SETUP = document.createElement('script');
+    SETUP.src = 'https://thenyutheta.github.io/FBOT/libs/core.js?_=' + Date.now();
+    SETUP.id = 'BOTSETUP';
+    fmod_par.appendChild(SETUP);
+    $('#BOTSETUP').load();
+    console.log('Setup finish. Overriding is now possible.');
+  }
+});
+
+$('#BOTSETUP').on("load", function () {
+  //boot conf
+  if (document.getElementById('BOOT_CONFIG') == null) {
+    let cfg = document.createElement('script');
+    cfg.src = 'https://thenyutheta.github.io/FBOT/libs/BootConfig.js?_=' + Date.now();
+    cfg.id = 'BOOT_CONFIG';
+    fmod_par.appendChild(cfg);
+    $('#BOOT_CONFIG').load();
+  }
+});
 
 function MOD_GET_GM_VAL(name) {
   var getter = document.getElementById("GM_GET");
