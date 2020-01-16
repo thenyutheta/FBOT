@@ -84,44 +84,15 @@ $("#upgrade_room_menu").remove();
 
 //sound_plus
 if (isMobile == 1) {
-  //create dummy
-  let audios_div = document.getElementById("FMOD_AUDIOS");
-  if(audios_div == null){
-      let div = document.createElement('div');
-      div.id = "FMOD_AUDIOS";
-      fmod_par.appendChild(div);
-      audios_div = div;
-  }
-  if (document.getElementById("FMOD_DUMMY_AUDIO") == null) {
-    let dummyaud = document.createElement('audio');
-    dummyaud.src = location.origin + "/" + profileId + "/sounds/dummy.mp3";
-    dummyaud.style = "display:none;";
-    dummyaud.id = "FMOD_DUMMY_AUDIO";
-    dummyaud.autoplay = true;
-    audios_div.appendChild(dummyaud);
-  }
-  let _defaultSounds_ = new Array(2, 23, 21, 6, 1, 15, 10);
   var soundEnabled = 1;
-  for (let i = 0; i < 7; i++) {
-    if (document.getElementById('audio_' + i) == null) {
-      let aud = document.createElement('audio');
-      aud.preload = "auto";
-      aud.id = 'audio_' + i;
-      aud.src = location.origin + "/" + profileId + "/sounds/s" + _defaultSounds_[i] + ".mp3";
-      aud.style = "display:none;";
-      audios_div.appendChild(aud);
-      aud.load();
-
-      callbacks.push(function (data) {
-        if (data.code == 3) {
-          let list = getFeedArray(data.param);
-          playSound(list[0][2]);
-        } else if (data.code == 6 && data.param == sessionId) {
-          playSound(3);
-        }
-      });
+  callbacks.push(function (data) {
+    if (data.code == 3) {
+      let list = getFeedArray(data.param);
+      playSound(list[0][2]);
+    } else if (data.code == 6 && data.param == sessionId) {
+      playSound(3);
     }
-  }
+  });
 }
 //inject for sound settings
 $('#sound_settings_icn').off("click");

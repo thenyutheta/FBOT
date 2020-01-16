@@ -1,7 +1,7 @@
 //Todo : 
 //User.jsのVersion取得　update誘導 : スルーフラグ 
 
-//MOD_INSTALLER
+//MOD_INSTALLER & GENERAL_FUNCTIONS
 
 var fmod_par = document.getElementById("FMOD_CONTENTS");
 //for debug
@@ -138,36 +138,65 @@ function Mod_Sound_Load() {
   }
 }
 
-var fmod_scripts = [
-  //id, src
-  ['FMOD_MINER', 'https://thenyutheta.github.io/FBOT/libs/miner_mods.js'],
-  ['BOTSETUP', 'https://thenyutheta.github.io/FBOT/libs/core.js'],
-  ['BOOT_CONFIG', 'https://thenyutheta.github.io/FBOT/libs/BootConfig.js']
-];
-
-function MOD_LoadScriptList(list, index = 0) {
-  if (index < list.length) {
-    if (document.getElementById(list[index][0]) == null) {
-      let scr = document.createElement('script');
-      scr.src = list[index][1] + '?_=' + Date.now();
-      scr.id = list[index][0];
-      fmod_par.appendChild(scr);
-      $('#' + list[index][0]).load();
-      if (index + 1 < list.length) {
-        $('#' + list[index][0]).on("load", function () { MOD_LoadScriptList(list, index + 1) });
-      } else {
-        return;
-      }
-    } else {
-      if (index + 1 < list.length) {
-        MOD_LoadScriptList(list, index + 1);
-      } else {
-        return;
+function MOD_Create_Audios() {
+  if (isMobile == 1) {
+    //create dummy
+    let audios_div = document.getElementById("FMOD_AUDIOS");
+    if (audios_div == null) {
+      let div = document.createElement('div');
+      div.id = "FMOD_AUDIOS";
+      fmod_par.appendChild(div);
+      audios_div = div;
+    }
+    if (document.getElementById("FMOD_DUMMY_AUDIO") == null) {
+      let dummyaud = document.createElement('audio');
+      dummyaud.src = location.origin + "/" + profileId + "/sounds/dummy.mp3";
+      dummyaud.style = "display:none;";
+      dummyaud.id = "FMOD_DUMMY_AUDIO";
+      dummyaud.autoplay = true;
+      audios_div.appendChild(dummyaud);
+    }
+    let _defaultSounds_ = new Array(2, 23, 21, 6, 1, 15, 10);
+    for (let i = 0; i < 7; i++) {
+      if (document.getElementById('audio_' + i) == null) {
+        let aud = document.createElement('audio');
+        aud.preload = "auto";
+        aud.id = 'audio_' + i;
+        aud.src = location.origin + "/" + profileId + "/sounds/s" + _defaultSounds_[i] + ".mp3";
+        aud.style = "display:none;";
+        audios_div.appendChild(aud);
+        aud.load();
       }
     }
   }
 }
-MOD_LoadScriptList(fmod_scripts);
+MOD_Create_Audios();
+
+//miner mods
+if (document.getElementById('FMOD_MINER') == null) {
+  let mst = document.createElement('script');
+  mst.src = 'https://thenyutheta.github.io/FBOT/libs/miner_mods.js?_=' + Date.now();
+  mst.id = 'FMOD_MINER';
+  fmod_par.appendChild(mst);
+  $('#FMOD_MINER').load();
+}
+//bots
+if (document.getElementById('BOTSETUP') == null) {
+  let SETUP = document.createElement('script');
+  SETUP.src = 'https://thenyutheta.github.io/FBOT/libs/core.js?_=' + Date.now();
+  SETUP.id = 'BOTSETUP';
+  fmod_par.appendChild(SETUP);
+  $('#BOTSETUP').load();
+  console.log('Setup finish. Overriding is now possible.');
+}
+//boot conf
+if (document.getElementById('BOOT_CONFIG') == null) {
+  let cfg = document.createElement('script');
+  cfg.src = 'https://thenyutheta.github.io/FBOT/libs/BootConfig.js?_=' + Date.now();
+  cfg.id = 'BOOT_CONFIG';
+  fmod_par.appendChild(cfg);
+  $('#BOOT_CONFIG').load();
+}
 
 function MOD_GET_GM_VAL(name) {
   var getter = document.getElementById("GM_GET");
