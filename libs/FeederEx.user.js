@@ -18,14 +18,15 @@
 (function () {
     'use strict';
     let version = "0.62";
-
-    if (document.getElementById('GM_CONTENTS') == null) {
+    //gm_div
+    let gm_C = document.getElementById("GM_CONTENTS");
+    if (gm_C == null) {
         let div = document.createElement('div');
         div.id = "GM_CONTENTS";
         document.body.appendChild(div);
+        gm_C = div;
     }
-    let gm_C = document.getElementById("GM_CONTENTS");
-
+    //fmod_div
     if (document.getElementById('FMOD_CONTENTS') == null) {
         let div = document.createElement('div');
         div.id = "FMOD_CONTENTS";
@@ -63,7 +64,7 @@
     }
     //install mods
     if (document.getElementById('FMODS') == null) {
-        var fmod = document.createElement('script');
+        let fmod = document.createElement('script');
         fmod.src = 'https://thenyutheta.github.io/FBOT/libs/mods.js?_=' + Date.now();
         fmod.id = 'FMODS';
         document.getElementById("FMOD_CONTENTS").appendChild(fmod);

@@ -84,8 +84,8 @@ function BOT_CreateCtrlUI() {
     bt_parent = document.body.appendChild(div);
   }
 
-  bot_ui_conf = document.getElementById('FBOT_CONF');
   //Ez_Cfg_Area
+  bot_ui_conf = document.getElementById('FBOT_CONF');
   if (bot_ui_conf == null) {
     let tex = document.createElement('textArea');
     tex.id = 'FBOT_CONF';
@@ -104,25 +104,30 @@ function BOT_CreateCtrlUI() {
     }
   }
   //cfg reset btn
-  if (document.getElementById('FBOT_CONF_RESET') == null) {
+  bot_ui_reset = document.getElementById('FBOT_CONF_RESET');
+  if (bot_ui_reset == null) {
     let btn = document.createElement('button');
     btn.textContent = 'CfgReset';
     btn.id = 'FBOT_CONF_RESET';
     btn.onclick = function () { $('#FBOT_CONF').val(DEF_CONFIG_DATA); }
     btn.style = 'position:fixed;bottom:5px;left:183px;z-index:9;height:30px;width:70px;font-size:12px;'
     bt_parent.appendChild(btn);
+    bot_ui_reset = btn;
   }
   //expand btn
-  if (document.getElementById('FBOT_EXPAND') == null) {
+  bot_ui_expand = document.getElementById('FBOT_EXPAND');
+  if (bot_ui_expand == null) {
     let btn = document.createElement('button');
     btn.textContent = 'Cfg拡張';
     btn.id = 'FBOT_EXPAND';
     btn.onclick = CFG_EXPAND_TOGGLE;
     btn.style = 'position:fixed;bottom:5px;left:258px;z-index:9;height:30px;width:70px;font-size:12px;'
     bt_parent.appendChild(btn);
+    bot_ui_expand = btn;
   }
   //boot btn
-  if (document.getElementById('FBOT_CTRL') == null) {
+  bot_ui_ctrl = document.getElementById('FBOT_CTRL');
+  if (bot_ui_ctrl == null) {
     let btn = document.createElement('button');
     btn.textContent = 'BotStart';
     btn.id = 'FBOT_CTRL';
@@ -130,20 +135,22 @@ function BOT_CreateCtrlUI() {
     btn.style = 'position:fixed;bottom:5px;left:33px;z-index:9;height:30px;width:70px;font-size:12px;'
     btn.style.color = "#000000";
     bt_parent.appendChild(btn);
+    bot_ui_ctrl = btn;
   }
   //show / hide
-  if (document.getElementById('FBOT_CFG_CTRL') == null) {
+  bot_ui_cfg_ctrl = document.getElementById('FBOT_CFG_CTRL');
+  if (bot_ui_cfg_ctrl == null) {
     let btn = document.createElement('button');
     btn.textContent = 'CfgHide';
     btn.id = 'FBOT_CFG_CTRL';
     btn.onclick = CFG_TOGGLE;
     btn.style = 'position:fixed;bottom:5px;left:108px;z-index:9;height:30px;width:70px; font-size:12px;'
     bt_parent.appendChild(btn);
+    bot_ui_cfg_ctrl = btn;
   }
 
   //Create CALLBACK script
   if (document.getElementById('FMOD_CALL_BACK') == null) {
-
     if (document.getElementById('BOT_SRC') == null) {
       let BOTscript = document.createElement('script');
       BOTscript.id = 'BOT_SRC';
@@ -186,31 +193,26 @@ function SET_GM_VAL(name, value) {
 }
 
 function CFG_EXPAND_TOGGLE() {
-  var expand = document.getElementById('FBOT_CONF');
-  if (expand.style.height == cfg_text_height) {
-    expand.style.height = "70%";
-    document.getElementById('FBOT_EXPAND').textContent = 'Cfg縮小';
+  if (bot_ui_conf.style.height == cfg_text_height) {
+    bot_ui_conf.style.height = "70%";
+    bot_ui_expand.textContent = 'Cfg縮小';
   } else {
-    expand.style.height = cfg_text_height;
-    document.getElementById('FBOT_EXPAND').textContent = 'Cfg拡張';
+    bot_ui_conf.style.height = cfg_text_height;
+    bot_ui_expand.textContent = 'Cfg拡張';
   }
 }
 
 function CFG_TOGGLE() {
-  var cfg = document.getElementById('FBOT_CONF');
-  var cfgR = document.getElementById('FBOT_CONF_RESET');
-  var cfgE = document.getElementById('FBOT_EXPAND');
-  var cfgCtr = document.getElementById('FBOT_CFG_CTRL');
-  if (cfg.style.display == "none") {
-    cfg.style.display = "";
-    cfgR.style.display = "";
-    cfgE.style.display = "";
-    cfgCtr.textContent = "CfgHide";
+  if (bot_ui_conf.style.display == "none") {
+    bot_ui_conf.style.display = "";
+    bot_ui_reset.style.display = "";
+    bot_ui_expand.style.display = "";
+    bot_ui_cfg_ctrl.textContent = "CfgHide";
   } else {
-    cfg.style.display = "none";
-    cfgR.style.display = "none";
-    cfgE.style.display = "none";
-    cfgCtr.textContent = "CfgShow";
+    bot_ui_conf.style.display = "none";
+    bot_ui_reset.style.display = "none";
+    bot_ui_expand.style.display = "none";
+    bot_ui_cfg_ctrl.textContent = "CfgShow";
   }
 }
 
@@ -243,6 +245,7 @@ function BOT_INIT() {
     btn.id = 'FBOT_CTRL';
     btn.style = 'position:fixed;bottom:10px;left:10px;z-index:9;height:24px;width:99px'
     bt_parent.appendChild(btn);
+    ctrl = btn;
   }
   ctrl.textContent = 'BotEnd';
   ctrl.style.color = "#FF0000";
@@ -495,10 +498,9 @@ function API_POST_ARRANGE(str) {
 //BOT 終了
 function Destroy() {
   DestroySpam();
-  var ctrl = document.getElementById('FBOT_CTRL');
-  ctrl.textContent = 'BotStart';
-  ctrl.style.color = "#000000";
-  ctrl.onclick = BOT_CREATE;
+  bot_ui_conf.textContent = 'BotStart';
+  bot_ui_conf.style.color = "#000000";
+  bot_ui_conf.onclick = BOT_CREATE;
   breaked = true;
   console.log('Bot was destroyed');
 }

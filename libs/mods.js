@@ -11,7 +11,7 @@ if (fmod_par == null) {
   document.body.appendChild(div);
   fmod_par = document.getElementById("FMOD_CONTENTS");
 }
-//fmod　向けCALLBACK
+//fmod　向けsocket CALLBACK
 if (document.getElementById('FMOD_CALL_BACK') == null) {
   let call = document.createElement('script');
   call.id = 'FMOD_CALL_BACK';
@@ -82,26 +82,30 @@ for (let i = 0; i < fmods_page_ids.length; i++) {
     fmod_par.appendChild(div);
   }
 }
+
 //Left btn
-if (document.getElementById('FMOD_PAGE_LEFT') == null) {
+var page_left_btn = document.getElementById('FMOD_PAGE_LEFT');
+if (page_left_btn == null) {
   let btn = document.createElement('button');
   btn.id = 'FMOD_PAGE_LEFT';
   btn.textContent = "←";
   btn.style = "position:fixed;bottom:5px;left:0px;z-index:9;height:30px;width:30px;";
   btn.onclick = function () { ChangePage(-1) };
   fmod_par.appendChild(btn);
+  page_left_btn = btn;
 }
-var page_left_btn = document.getElementById('FMOD_PAGE_LEFT');
+
 //right btn
-if (document.getElementById('FMOD_PAGE_RIGHT') == null) {
+var page_right_btn = document.getElementById('FMOD_PAGE_RIGHT');
+if (page_right_btn == null) {
   let btn = document.createElement('button');
   btn.id = 'FMOD_PAGE_RIGHT';
   btn.textContent = "→";
   btn.style = "position:fixed;bottom:5px;left:330px;z-index:9;height:30px;width:30px;";
   btn.onclick = function () { ChangePage(1) };
   fmod_par.appendChild(btn);
+  page_right_btn = btn;
 }
-var page_right_btn = document.getElementById('FMOD_PAGE_RIGHT');
 
 function ChangePage(vector) {
   now_page += vector;
@@ -124,9 +128,9 @@ ChangePage(0);//init
 
 //sound data
 var ModSound = new Map();
-function Mod_Sound_Load(){
-  for(let i = 0;i < 7;i++){
-    if(ModSound[i] != undefined){
+function Mod_Sound_Load() {
+  for (let i = 0; i < 7; i++) {
+    if (ModSound[i] != undefined && ModSound[i] != null) {
       let dox = document.getElementById("audio_" + i);
       dox.src = ModSound[i];
       dox.load();

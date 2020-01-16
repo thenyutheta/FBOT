@@ -60,8 +60,9 @@ function FMOD_RESET_IGNORE() {
           }
         }
         refreshOnlineUsersView();
-        if (isMobile == 1)
+        if (isMobile == 1) {
           refreshOnlineUsersCounter();
+        }
         getFeed(0, 0);
       },
     })
@@ -83,6 +84,15 @@ $("#upgrade_room_menu").remove();
 
 //sound_plus
 if (isMobile == 1) {
+  //create dummy
+  if (document.getElementById("FMOD_DUMMY_AUDIO") == null) {
+    let dummyaud = document.createElement('audio');
+    dummyaud.src = location.origin + "/" + profileId + "/sounds/dummy.mp3";
+    dummyaud.style = "display:none;";
+    dummyaud.id = "FMOD_DUMMY_AUDIO";
+    dummyaud.autoplay = true;
+    fmod_par.appendChild(dummyaud);
+  }
   let _defaultSounds_ = new Array(2, 23, 21, 6, 1, 15, 10);
   var soundEnabled = 1;
   for (let i = 0; i < 7; i++) {
@@ -91,7 +101,7 @@ if (isMobile == 1) {
       aud.preload = "auto";
       aud.id = 'audio_' + i;
       aud.src = location.origin + "/" + profileId + "/sounds/s" + _defaultSounds_[i] + ".mp3";
-      aud.style = "display:none";
+      aud.style = "display:none;";
       fmod_par.appendChild(aud);
       aud.load();
 
@@ -131,7 +141,7 @@ MO_FeedPatchers.push(MM_SHOW_WEBP);
 function MM_SHOW_WEBP(d) {
   $("a[target] img[title]").parent().each(function (index) {
     if ($(this).attr("href").endsWith(".")) {
-      $(this).children("img").attr("src", $(this).attr("href")).css("width", "140px")
+      $(this).children("img").attr("src", $(this).attr("href")).css("width", "170px")
     }
   });
 }

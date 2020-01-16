@@ -6,29 +6,48 @@ var BG_COMMENT = null;
 var BG_HEADER = null;
 
 var boot_parent = document.getElementById("BOOT_CONFIG_DIV");
+//debug
+if(boot_parent == null){
+  let div = document.createElement('div');
+  div.id = "BOOT_CONFIG_DIV";
+  document.body.append(div);
+  boot_parent = div;
+}
 
 var DEF_BOOT_CONF =
   "/*BOOT_LOAD_CONFIGS*/\n" +
-  "BG_BODY = \"https://i.ytimg.com/vi/KGNU6yG3L_A/hqdefault.jpg?sqp=-oaymwEZCOADEI4CSFXyq4qpAwsIARUAAIhCGAFwAQ==&rs=AOn4CLDx-0H9FZcmvoraWtIwqW7kCQO9mw\"\n";
+  "//ignore \"ReRun\"\n" +
+  "function BootOnly(){\n" +
+  "  //set back ground url (= null to = \"bg url\")\n" +
+  "  BG_BODY = null;\n" +
+  "  //Other : BG_ (USERS, POST_FRAME, PUBLIC_NOTE, COMMENT, HEADER)\n" +
+  "  //set audio url [0 ~ 6]\n" +
+  "  ModSound[0] = null;\n" +
+  "}//end BootOnly\n" +
+  ""
 
 var boot_cfg_text_height = "70px"
 //area
-if (document.getElementById('BOOT_CONF_TEX') == null) {
+var boot_conf_ui_conf = document.getElementById('BOOT_CONF_TEX');
+if (boot_conf_ui_conf == null) {
   let tex = document.createElement('textArea');
   tex.id = 'BOOT_CONF_TEX';
   tex.rows = 5;
   tex.style = 'position:fixed;bottom:40px;z-index:9;height:' + boot_cfg_text_height + ';width:100%;font-size:12px;'
   boot_parent.appendChild(tex);
+  boot_conf_ui_conf = tex;
 }
 
 //expand btn
-if (document.getElementById('BOOT_CONF_EXPAND') == null) {
+var boot_conf_ui_expand = document.getElementById('BOOT_CONF_EXPAND');
+if (boot_conf_ui_expand == null) {
   let btn = document.createElement('button');
   btn.textContent = '拡張';
   btn.id = 'BOOT_CONF_EXPAND';
   btn.onclick = BOOT_CFG_EXPAND_TOGGLE;
   btn.style = 'position:fixed;bottom:5px;left:258px;z-index:9;height:30px;width:70px;font-size:12px;'
   boot_parent.appendChild(btn);
+  boot_conf_ui_expand = btn;
 }
 
 //reset
@@ -62,13 +81,12 @@ if (document.getElementById('BOOT_CONF_RUN') == null) {
 }
 
 function BOOT_CFG_EXPAND_TOGGLE() {
-  var expand = document.getElementById('BOOT_CONF_TEX');
-  if (expand.style.height == boot_cfg_text_height) {
-    expand.style.height = "70%";
-    document.getElementById('BOOT_CONF_EXPAND').textContent = '縮小';
+  if (boot_conf_ui_conf.style.height == boot_cfg_text_height) {
+    boot_conf_ui_conf.style.height = "70%";
+    boot_conf_ui_expand.textContent = '縮小';
   } else {
-    expand.style.height = boot_cfg_text_height;
-    document.getElementById('BOOT_CONF_EXPAND').textContent = '拡張';
+    boot_conf_ui_conf.style.height = boot_cfg_text_height;
+    boot_conf_ui_expand.textContent = '拡張';
   }
 }
 
