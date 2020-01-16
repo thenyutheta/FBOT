@@ -250,10 +250,10 @@ function MOD_SearchTable(source, table) {
     //diceは無視
     //if (table[i].indexOf('{dice}') > -1) { continue; }
     if (table[i].indexOf('{reg}') > -1) {
-      result = REG_SEARCH(source, table[i].replace('{reg}', ''), null);
+      result = MOD_REG_SEARCH(source, table[i].replace('{reg}', ''), null);
       if (result != null) { break; }
     } else if (table[i].indexOf('{regi}') > -1) {
-      result = REG_SEARCH(source, table[i].replace('{regi}', ''), 'i');
+      result = MOD_REG_SEARCH(source, table[i].replace('{regi}', ''), 'i');
       if (result != null) { break; }
     } else if (table[i].indexOf('{all}') > -1) {
       if (source == table[i].replace('{all}', "")) {
