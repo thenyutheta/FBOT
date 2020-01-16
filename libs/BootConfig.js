@@ -158,7 +158,7 @@ function BC_Set_Comment_BG(d) {
 MO_FeedPatchers.push(BC_WordMuter);
 
 function BC_WordMuter(d){
-  ("#feed_list .comment").filter(function(index){
+  $("#feed_list .comment").filter(function(index){
     let text = $("tr td[colspan=2]", this).text();
     for(let i = 0;i < MuteWord.length;i++){
       if(text.indexOf(MuteWord[i]) > -1){
@@ -166,5 +166,7 @@ function BC_WordMuter(d){
       }
     }
     return false;
-  }).parent().parent().css("display", "none")
+  }).parent().parent()
+  //.css("display", "none");
+  .remove();
 }
