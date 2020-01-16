@@ -242,3 +242,45 @@ function API_POST(text, IsSp = 0, category = 0) {
     dataType: 'application/x-www-form-urlencoded; charset=UTF-8',
   });
 }
+
+//一致したらテキストを返す
+function MOD_SearchTable(source, table) {
+  var result = null;
+  for (var i in table) {
+    //diceは無視
+    //if (table[i].indexOf('{dice}') > -1) { continue; }
+    if (table[i].indexOf('{reg}') > -1) {
+      result = REG_SEARCH(source, table[i].replace('{reg}', ''), null);
+      if (result != null) { break; }
+    } else if (table[i].indexOf('{regi}') > -1) {
+      result = REG_SEARCH(source, table[i].replace('{regi}', ''), 'i');
+      if (result != null) { break; }
+    } else if (table[i].indexOf('{all}') > -1) {
+      if (source == table[i].replace('{all}', "")) {
+        result = source;
+        break;
+      }
+    } else if (source.indexOf(table[i]) > -1) {
+      //reg無し
+      result = table[i];
+      break;
+    }
+  }
+  return result;
+}
+
+//正規表現
+function MOD_REG_SEARCH(source, pattern, flg) {
+  var re = null;
+  if (flg != null) {
+    re = new RegExp(pattern, flg);
+  } else {
+    re = new RegExp(pattern);
+  }
+  var m = source.match(re);
+  if (m != null) {
+    return m[0];
+  } else {
+    return null;
+  }
+}

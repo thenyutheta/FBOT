@@ -160,12 +160,7 @@ MO_FeedPatchers.push(BC_WordMuter);
 function BC_WordMuter(d){
   $("#feed_list .comment").filter(function(index){
     let text = $("tr td[colspan=2]", this).text();
-    for(let i = 0;i < MuteWord.length;i++){
-      if(text.indexOf(MuteWord[i]) > -1){
-        return true;
-      }
-    }
-    return false;
+    return MOD_SearchTable(text, MuteWord) != null;
   }).parent().parent()
   //.css("display", "none");
   .remove();
