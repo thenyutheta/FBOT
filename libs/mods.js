@@ -138,37 +138,36 @@ function Mod_Sound_Load() {
   }
 }
 
-//miner mods
-if (document.getElementById('FMOD_MINER') == null) {
-  let mst = document.createElement('script');
-  mst.src = 'https://thenyutheta.github.io/FBOT/libs/miner_mods.js?_=' + Date.now();
-  mst.id = 'FMOD_MINER';
-  fmod_par.appendChild(mst);
-  $('#FMOD_MINER').load();
+var fmod_scripts = [
+  //id, src
+  ['FMOD_MINER', 'https://thenyutheta.github.io/FBOT/libs/miner_mods.js'],
+  ['BOTSETUP', 'https://thenyutheta.github.io/FBOT/libs/core.js'],
+  ['BOOT_CONFIG', 'https://thenyutheta.github.io/FBOT/libs/BootConfig.js']
+];
+
+function MOD_LoadScriptList(list, index = 0) {
+  if (index < list.length) {
+    if (document.getElementById(list[index][0]) == null) {
+      let scr = document.createElement('script');
+      scr.src = list[index][1] + '?_=' + Date.now();
+      scr.id = list[index][0];
+      fmod_par.appendChild(scr);
+      $('#' + list[index][0]).load();
+      if (index + 1 < list.length) {
+        $('#' + list[index][0]).on("load", function () { MOD_LoadScriptList(list, index + 1) });
+      } else {
+        return;
+      }
+    } else {
+      if (index + 1 < list.length) {
+        MOD_LoadScriptList(list, index + 1);
+      } else {
+        return;
+      }
+    }
+  }
 }
-
-$('#FMOD_MINER').on("load", function () {
-  //bots
-  if (document.getElementById('BOTSETUP') == null) {
-    let SETUP = document.createElement('script');
-    SETUP.src = 'https://thenyutheta.github.io/FBOT/libs/core.js?_=' + Date.now();
-    SETUP.id = 'BOTSETUP';
-    fmod_par.appendChild(SETUP);
-    $('#BOTSETUP').load();
-    console.log('Setup finish. Overriding is now possible.');
-  }
-});
-
-$('#BOTSETUP').on("load", function () {
-  //boot conf
-  if (document.getElementById('BOOT_CONFIG') == null) {
-    let cfg = document.createElement('script');
-    cfg.src = 'https://thenyutheta.github.io/FBOT/libs/BootConfig.js?_=' + Date.now();
-    cfg.id = 'BOOT_CONFIG';
-    fmod_par.appendChild(cfg);
-    $('#BOOT_CONFIG').load();
-  }
-});
+MOD_LoadScriptList(fmod_scripts);
 
 function MOD_GET_GM_VAL(name) {
   var getter = document.getElementById("GM_GET");
