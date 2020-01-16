@@ -82,22 +82,37 @@ $("div[style*=inline-block] iframe").remove()
 $("#upgrade_room_menu").remove();
 
 //sound_plus
-if (document.getElementById('FMOD_AUDIO') == null) {
-  let aud = document.createElement('audio');
-  aud.id = 'FMOD_AUDIO';
-  aud.src = location.origin + "/" + profileId + "/sounds/s2.mp3";
-  aud.style = "display:none";
-  fmod_par.appendChild(aud);
+if (isMobile == 1) {
+  let _defaultSounds_ = new Array(2, 23, 21, 6, 1, 15, 10);
+  var soundEnabled = 1;
+  for (let i = 0; i < 7; i++) {
+    if (document.getElementById('audio_' + i) == null) {
+      let aud = document.createElement('audio');
+      aud.preload = "auto";
+      aud.id = 'audio_' + i;
+      aud.src = location.origin + "/" + profileId + "/sounds/s" + _defaultSounds_[i] + ".mp3";
+      aud.style = "display:none";
+      fmod_par.appendChild(aud);
+      aud.load();
 
-  callbacks.push(function (data) {
-    if (isMobile == 0) { return; }
-    if (data.code != 3) { return; }
-    var list = getFeedArray(data.param);
-    if (list[0][7] != sessionId) {
-      document.getElementById('FMOD_AUDIO').play();
+      callbacks.push(function (data) {
+        if (data.code == 3) {
+          let list = getFeedArray(data.param);
+          playSound(list[0][2]);
+        } else if (data.code == 6 && data.param == sessionId) {
+          playSound(3);
+        }
+      });
     }
-  });
+  }
 }
+//inject for sound settings
+$('#sound_settings_icn').off("click");
+$('#sound_settings_icn').click(function () {
+  toggleSoundSettings();
+  $("div[aria-describedby=sound_settings_frame] div.ui-dialog-buttonset button.ui-button-text-only").on("click", Mod_Sound_Load);
+  $("div[aria-describedby*=sound_settings_frame] div.ui-dialog-titlebar button.ui-button-icon-only").on("click", Mod_Sound_Load);
+});
 
 //init
 MM_ANTI_STYLE_BREAKER(null);

@@ -122,6 +122,17 @@ function ChangePage(vector) {
 }
 ChangePage(0);//init
 
+//sound data
+var ModSound = new Map();
+function Mod_Sound_Load(){
+  for(let i = 0;i < 7;i++){
+    if(ModSound[i] != undefined){
+      let dox = document.getElementById("audio_" + i);
+      dox.src = ModSound[i];
+      dox.load();
+    }
+  }
+}
 
 //miner mods
 if (document.getElementById('FMOD_MINER') == null) {

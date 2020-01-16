@@ -71,6 +71,12 @@ var breaked = false;
 var cfg_text_height = "70px"
 var bt_parent = document.getElementById("BOT_AREA_DIV");
 
+var bot_ui_conf = null;
+var bot_ui_reset= null;
+var bot_ui_expand = null;
+var bot_ui_ctrl = null;
+var bot_ui_cfg_ctrl = null;
+
 function BOT_CreateCtrlUI() {
   if (bt_parent == null) {
     let div = document.createElement('div');
@@ -78,13 +84,15 @@ function BOT_CreateCtrlUI() {
     bt_parent = document.body.appendChild(div);
   }
 
+  bot_ui_conf = document.getElementById('FBOT_CONF');
   //Ez_Cfg_Area
-  if (document.getElementById('FBOT_CONF') == null) {
+  if (bot_ui_conf == null) {
     let tex = document.createElement('textArea');
     tex.id = 'FBOT_CONF';
     tex.rows = 5;
     tex.style = 'position:fixed;bottom:40px;z-index:9;height:' + cfg_text_height + ';width:100%;font-size:12px;'
     bt_parent.appendChild(tex);
+    bot_ui_conf = tex;
   }
   //set value
   {
