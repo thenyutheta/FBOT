@@ -94,6 +94,8 @@ function ANIMATOR_JS_EXPAND_TOGGLE() {
 
 function ANIMATOR_JS_TOGGLE_RUN() {
   if (anime_interval_manager == null) {
+    //init
+    anime_frames = [];
     try {
       eval($(animator_js_ui_conf).val());
     } catch (e) {
@@ -105,7 +107,7 @@ function ANIMATOR_JS_TOGGLE_RUN() {
       alert("animation が登録されていません！");
       return;
     }
-    API_POST(anime_run_cmd_tex + " $id : " +  Date.now());
+    API_POST(anime_run_cmd_tex + " $id : " + Date.now());
   } else {
     API_EDIT_FEED(anime_target_id, anime_ended_text)
     DestroyAnime();
@@ -154,5 +156,4 @@ function DestroyAnime() {
   }
   anime_interval_manager = null;
   anime_now_frame = 0;
-  anime_frames = [];
 }
