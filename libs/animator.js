@@ -95,6 +95,13 @@ function ANIMATOR_JS_EXPAND_TOGGLE() {
 
 function ANIMATOR_JS_TOGGLE_RUN() {
   if (anime_interval_manager == null) {
+    try {
+      eval($(animator_js_ui_conf).val());
+    } catch (e) {
+      alert("boot config error [animator]! : \n" + e);
+      return;
+    }
+
     if (anime_frames.length == 0) {
       alert("animation が登録されていません！");
       return;
@@ -125,13 +132,6 @@ function CreateAnime() {
     return;
   }
   DestroyAnime();
-  try {
-    eval($(animator_js_ui_conf).val());
-  } catch (e) {
-    alert("boot config error [general]! : \n" + e);
-    API_REMOVE_FEED(anime_target_id);
-    return;
-  }
   MOD_SET_GM_VAL('config_anime', $(animator_js_ui_conf).val());
   animator_js_runner.textContent = "Stop";
   animator_js_runner.style.color = "#FF0000";
