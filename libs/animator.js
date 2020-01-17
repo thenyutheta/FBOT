@@ -1,6 +1,7 @@
 //config
-var anime_interval = 1000 / 10;
+var anime_interval = 1000;
 var anime_frames = [];
+var anime_ended_text = "[EndAnime]";
 //==========
 var anime_interval_manager = null;
 var anime_run_cmd_tex = "[MOD_COMMAND]${RunAnimator}";
@@ -10,7 +11,7 @@ var anime_now_frame = 0;
 var DEF_ANIMATOR_JS =
   "/*ANIMATOR*/\n" +
   "//interval(ms)\n" +
-  "anime_interval = 1000 / 10;\n" +
+  "anime_interval = 1000;\n" +
   "//init(don't edit)\n" +
   "anime_frames = [];\n" +
   "//set frames\n" +
@@ -108,6 +109,7 @@ function ANIMATOR_JS_TOGGLE_RUN() {
     }
     API_POST(anime_run_cmd_tex + " $id : " +  Date.now());
   } else {
+    API_EDIT_FEED(anime_target_id, anime_ended_text)
     DestroyAnime();
   }
 }
