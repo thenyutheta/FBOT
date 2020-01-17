@@ -137,6 +137,7 @@ function CreateAnime() {
   MOD_SET_GM_VAL('config_anime', $(animator_js_ui_conf).val());
   animator_js_runner.textContent = "Stop";
   animator_js_runner.style.color = "#FF0000";
+  ANIMATOR_FRAME_PROCESS();//fast draw first frame
   anime_interval_manager = setInterval(function () { ANIMATOR_FRAME_PROCESS(); }, anime_interval);
 }
 
