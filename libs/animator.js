@@ -139,7 +139,7 @@ function CreateAnime() {
 }
 
 function ANIMATOR_FRAME_PROCESS() {
-  if (anime_now_frame == anime_frames) {
+  if (anime_now_frame == anime_frames.length) {
     anime_now_frame = 0;
   }
   API_EDIT_FEED(anime_target_id, anime_frames[anime_now_frame]);
