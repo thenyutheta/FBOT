@@ -43,9 +43,9 @@ if (animator_js_ui_conf == null) {
 {
   let conf_anime_data = MOD_GET_GM_VAL("config_anime");
   if (conf_anime_data != null) {
-    $("#ANIMATOR_JS_TEX").val(conf_anime_data);
+    $(animator_js_ui_conf).val(conf_anime_data);
   } else {
-    $("#ANIMATOR_JS_TEX").val(DEF_ANIMATOR_JS);
+    $(animator_js_ui_conf).val(DEF_ANIMATOR_JS);
   }
 }
 
@@ -95,35 +95,51 @@ function ANIMATOR_JS_EXPAND_TOGGLE() {
 
 function ANIMATOR_JS_TOGGLE_RUN() {
   if (anime_interval_manager == null) {
-    API_POST(anime_run_cmd_tex);
+    if (anime_frames.length == 0) {
+      alert("animation が登録されていません！");
+      return;
+    }
+    API_POST(anime_run_cmd_tex + " $id : " +  Date.now());
   } else {
     DestroyAnime();
   }
 }
 
 function ANIMATOR_JS_SOCKET_CALLBACK(data) {
-  let list = getFeedArray(data.param);
-  if (list[0][7] == sessionId) {
-    if (list[0][5] == anime_run_cmd_tex) {
-      anime_target_id = list[0][0];
-      CreateAnime();
+  if (data.code == 3) {
+    let list = getFeedArray(data.param);
+    if (list[0][7] == sessionId) {
+      if (list[0][5].indexOf(anime_run_cmd_tex) > -1) {
+        anime_target_id = list[0][0];
+        CreateAnime();
+      }
     }
   }
 }
 callbacks.push(ANIMATOR_JS_SOCKET_CALLBACK);
 
 function CreateAnime() {
-  if(anime_frames.length == 0){
-    alert("animation が登録されていません！")
+  if (anime_frames.length == 0) {
+    alert("animation が登録されていません！");
+    API_REMOVE_FEED(anime_target_id);
+    return;
   }
   DestroyAnime();
+  try {
+    eval($(animator_js_ui_conf).val());
+  } catch (e) {
+    alert("boot config error [general]! : \n" + e);
+    API_REMOVE_FEED(anime_target_id);
+    return;
+  }
+  MOD_SET_GM_VAL('config_anime', $(animator_js_ui_conf).val());
   animator_js_runner.textContent = "Stop";
   animator_js_runner.style.color = "#FF0000";
   anime_interval_manager = setInterval(function () { ANIMATOR_FRAME_PROCESS(); }, anime_interval);
 }
 
-function ANIMATOR_FRAME_PROCESS(){
-  if(anime_now_frame == anime_frames){
+function ANIMATOR_FRAME_PROCESS() {
+  if (anime_now_frame == anime_frames) {
     anime_now_frame = 0;
   }
   API_EDIT_FEED(anime_target_id, anime_frames[anime_now_frame]);

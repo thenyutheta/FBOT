@@ -266,6 +266,29 @@ function API_EDIT_FEED(id, text, category = 0) {
   });
 }
 
+function API_REMOVE_FEED(feedId) {
+  if (feedId != '*')
+    $('#' + feedId).hide();
+  $.ajax({
+    url: location.origin + "/" + profileId + '/remove_feed.php',
+    type: 'POST',
+    dataType: 'text',
+    data: {
+      'id': feedId
+    },
+    success: function (result) {
+      if (result != 'OK') {
+        if (feedId != '*')
+          $('#' + feedId).show();
+      }
+    },
+    error: function (XMLHttpRequest, textStatus, errorThrown) {
+      if (feedId != '*')
+        $('#' + feedId).show();
+    }
+  });
+}
+
 //一致したらテキストを返す
 function MOD_SearchTable(source, table) {
   var result = null;
