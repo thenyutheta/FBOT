@@ -186,7 +186,7 @@ for(let i = 0;i < fmod_scripts.length;i++){
     scr.id = fmod_scripts[i][0];
     scr.onload = MOD_ScriptLoaded;
     fmod_par.appendChild(scr);
-    scr.load();
+    $(scr).load();
   }
 }
 
