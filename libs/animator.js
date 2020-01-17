@@ -12,8 +12,6 @@ var DEF_ANIMATOR_JS =
   "/*ANIMATOR*/\n" +
   "//interval(ms)\n" +
   "anime_interval = 1000;\n" +
-  "//init(don't edit)\n" +
-  "anime_frames = [];\n" +
   "//set frames\n" +
   "anime_frames.push('HELLO...');\n" +
   "anime_frames.push('.HELLO..');\n" +
@@ -151,9 +149,10 @@ function ANIMATOR_FRAME_PROCESS() {
 function DestroyAnime() {
   if (anime_interval_manager != null) {
     clearInterval(anime_interval_manager);
-    anime_interval_manager = null;
-    anime_now_frame = 0;
     animator_js_runner.textContent = "Run";
     animator_js_runner.style.color = "#000000";
   }
+  anime_interval_manager = null;
+  anime_now_frame = 0;
+  anime_frames = [];
 }
