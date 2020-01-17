@@ -1,3 +1,5 @@
+//bot core
+
 //configs (ダミー)
 var TargetName = [''];
 var TargetText = ['{regi}HEY BOT', '{dice}', '{reg}Hey.+Bot'];
@@ -72,7 +74,7 @@ var cfg_text_height = "70px"
 var bt_parent = document.getElementById("BOT_AREA_DIV");
 
 var bot_ui_conf = null;
-var bot_ui_reset= null;
+var bot_ui_reset = null;
 var bot_ui_expand = null;
 var bot_ui_ctrl = null;
 var bot_ui_cfg_ctrl = null;
@@ -307,7 +309,7 @@ function LOAD_DATA(data) {
         spamcounter = 0;
         DestroySpam();
         setTimeout(POST_MAIN(info + '\n' + REPLACEDATA(GetText(BotSpamStartText), list, SPAMSTART)), PostWait);
-        sender = setInterval(function () { SPAM_POST(info + '\n' + GetText(BotSpamText)) }, SpamInterval);
+        sender = setInterval(function () { SPAM_POST(info + '\n' + GetText(BotSpamText)); }, SpamInterval);
         if (SpamTimeOut >= 0) {
           breaker = setTimeout(DestroySpam, SpamTimeOut);
         }

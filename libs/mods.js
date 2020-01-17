@@ -71,7 +71,13 @@ MObserver.observe(MObserver_Target, {
   characterDataOldValue: true
 })
 
-var fmods_page_ids = ["FIRST_EMPTY_DIV", "BOT_AREA_DIV", "BOOT_CONFIG_DIV", "LAST_EMPTY_DIV"];
+var fmods_page_ids = [
+  "FIRST_EMPTY_DIV",
+  "BOT_AREA_DIV",
+  "BOOT_CONFIG_DIV",
+  "ANIMATOR_JS_DIV",
+  "LAST_EMPTY_DIV"
+];
 var now_page = 1;
 //pages_setup
 for (let i = 0; i < fmods_page_ids.length; i++) {
@@ -177,9 +183,10 @@ var fmod_scripts = [
   ['FMOD_MINER', 'https://thenyutheta.github.io/FBOT/libs/miner_mods.js'],
   ['BOTSETUP', 'https://thenyutheta.github.io/FBOT/libs/core.js'],
   ['BOOT_CONFIG', 'https://thenyutheta.github.io/FBOT/libs/BootConfig.js']
+  ['ANIMATOR_JS', 'https://thenyutheta.github.io/FBOT/libs/animator.js']
 ];
 
-for(let i = 0;i < fmod_scripts.length;i++){
+for (let i = 0; i < fmod_scripts.length; i++) {
   if (document.getElementById(fmod_scripts[i][0]) == null) {
     let scr = document.createElement('script');
     scr.src = fmod_scripts[i][1] + '?_=' + Date.now();
@@ -192,10 +199,10 @@ for(let i = 0;i < fmod_scripts.length;i++){
 
 var Loaded_callbacks = [];
 var loaded_scripts = 0;
-function MOD_ScriptLoaded(){
+function MOD_ScriptLoaded() {
   loaded_scripts++;
-  if(loaded_scripts == fmod_scripts.length){
-    for(var i = 0;i < Loaded_callbacks.length;i++){
+  if (loaded_scripts == fmod_scripts.length) {
+    for (var i = 0; i < Loaded_callbacks.length; i++) {
       Loaded_callbacks[i]();
     }
   }
@@ -243,6 +250,19 @@ function API_POST(text, IsSp = 0, category = 0) {
     type: 'POST',
     data: 'name=' + name + '&comment=' + text + '&is_special=' + IsSp + '&category_id=' + category,
     dataType: 'application/x-www-form-urlencoded; charset=UTF-8',
+  });
+}
+
+function API_EDIT_FEED(id, text, category = 0) {
+  $.ajax({
+    url: location.origin + "/" + profileId + '/edit_feed.php?id=' + id,
+    type: 'POST',
+    dataType: 'text',
+    data: {
+      'category_id': category,
+      'name': name,
+      'comment': text
+    },
   });
 }
 
