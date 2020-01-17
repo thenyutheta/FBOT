@@ -500,9 +500,9 @@ function API_POST_ARRANGE(str) {
 //BOT 終了
 function Destroy() {
   DestroySpam();
-  bot_ui_conf.textContent = 'BotStart';
-  bot_ui_conf.style.color = "#000000";
-  bot_ui_conf.onclick = BOT_CREATE;
+  bot_ui_ctrl.textContent = 'BotStart';
+  bot_ui_ctrl.style.color = "#000000";
+  bot_ui_ctrl.onclick = BOT_CREATE;
   breaked = true;
   console.log('Bot was destroyed');
 }
