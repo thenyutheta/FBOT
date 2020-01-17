@@ -144,6 +144,10 @@ function ANIMATOR_FRAME_PROCESS() {
   if (anime_now_frame == anime_frames.length) {
     anime_now_frame = 0;
   }
+  if(anime_frames[anime_now_frame] == undefined || anime_frames[anime_now_frame] == null || anime_frames[anime_now_frame] == ""){
+    anime_now_frame++;
+    return;
+  }
   API_EDIT_FEED(anime_target_id, anime_frames[anime_now_frame]);
   anime_now_frame++;
 }
