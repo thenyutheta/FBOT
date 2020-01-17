@@ -172,30 +172,33 @@ function MOD_Create_Audios() {
 }
 MOD_Create_Audios();
 
-//miner mods
-if (document.getElementById('FMOD_MINER') == null) {
-  let mst = document.createElement('script');
-  mst.src = 'https://thenyutheta.github.io/FBOT/libs/miner_mods.js?_=' + Date.now();
-  mst.id = 'FMOD_MINER';
-  fmod_par.appendChild(mst);
-  $('#FMOD_MINER').load();
+var fmod_scripts = [
+  //id, src
+  ['FMOD_MINER', 'https://thenyutheta.github.io/FBOT/libs/miner_mods.js'],
+  ['BOTSETUP', 'https://thenyutheta.github.io/FBOT/libs/core.js'],
+  ['BOOT_CONFIG', 'https://thenyutheta.github.io/FBOT/libs/BootConfig.js']
+];
+
+for(let i = 0;i < fmod_scripts.length;i++){
+  if (document.getElementById(fmod_scripts[i][0]) == null) {
+    let scr = document.createElement('script');
+    scr.src = fmod_scripts[i][1] + '?_=' + Date.now();
+    scr.id = fmod_scripts[i][0];
+    scr.onload = MOD_ScriptLoaded;
+    fmod_par.appendChild(scr);
+    scr.load();
+  }
 }
-//bots
-if (document.getElementById('BOTSETUP') == null) {
-  let SETUP = document.createElement('script');
-  SETUP.src = 'https://thenyutheta.github.io/FBOT/libs/core.js?_=' + Date.now();
-  SETUP.id = 'BOTSETUP';
-  fmod_par.appendChild(SETUP);
-  $('#BOTSETUP').load();
-  console.log('Setup finish. Overriding is now possible.');
-}
-//boot conf
-if (document.getElementById('BOOT_CONFIG') == null) {
-  let cfg = document.createElement('script');
-  cfg.src = 'https://thenyutheta.github.io/FBOT/libs/BootConfig.js?_=' + Date.now();
-  cfg.id = 'BOOT_CONFIG';
-  fmod_par.appendChild(cfg);
-  $('#BOOT_CONFIG').load();
+
+var Loaded_callbacks = [];
+var loaded_scripts = 0;
+function MOD_ScriptLoaded(){
+  loaded_scripts++;
+  if(loaded_scripts == fmod_scripts.length){
+    for(var i = 0;i < Loaded_callbacks.length;i++){
+      Loaded_callbacks[i]();
+    }
+  }
 }
 
 function MOD_GET_GM_VAL(name) {

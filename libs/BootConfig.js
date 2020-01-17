@@ -120,6 +120,15 @@ function ExecuteBootConfig(boot) {
         return;
       }
     }
+
+    if (typeof BootLoaded != 'undefined') {
+      try {
+        BootLoaded();
+      } catch (e) {
+        alert("boot config error [BootLoaded]! : \n" + e);
+        return;
+      }
+    }
   }
 
   Mod_Sound_Load();
