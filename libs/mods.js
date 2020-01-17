@@ -182,7 +182,7 @@ var fmod_scripts = [
   //id, src
   ['FMOD_MINER', 'https://thenyutheta.github.io/FBOT/libs/miner_mods.js'],
   ['BOTSETUP', 'https://thenyutheta.github.io/FBOT/libs/core.js'],
-  ['BOOT_CONFIG', 'https://thenyutheta.github.io/FBOT/libs/BootConfig.js']
+  ['BOOT_CONFIG', 'https://thenyutheta.github.io/FBOT/libs/BootConfig.js'],
   ['ANIMATOR_JS', 'https://thenyutheta.github.io/FBOT/libs/animator.js']
 ];
 
