@@ -66,7 +66,7 @@ var sender = null;
 var breaker = null;
 var counter = 0;
 var spamcounter = 0;
-var breaked = false;
+var bot_running = false;
 
 //$("link[rel*=shortcut]").attr("href", "https://thenyutheta.github.io/FBOT/favicon.png");
 
@@ -237,7 +237,7 @@ function BOT_INIT() {
   sender = null;
   breaker = null;
   counter = CounterStart;
-  breaked = false;
+  bot_running = true;
 
   //Create Stop Botton
   var ctrl = document.getElementById('FBOT_CTRL');
@@ -270,8 +270,8 @@ function LOAD_DATA(data) {
   //投稿以外なら帰る
   if (data.code != 3) { return; }
   EXAPI_GET_POST_DATA(data);
-  //終了していたら帰る
-  if (breaked) { return; }
+  //動作中でなければ処理をしない。
+  if (!bot_running) { return; }
   var list = getFeedArray(data.param);
   BOT_DEBUG_DATA(data);
   //取得
@@ -279,7 +279,6 @@ function LOAD_DATA(data) {
   var PostContent = list[0][5];
   //fix
   PostContent = POST_CONTENT_FIX(PostContent);
-  var PostId = list[0][0];
   //BOTには反応しない。
   if (PostName.indexOf(BotName) > -1 || PostContent.indexOf(info) > -1) { return; }
   //BREAK
@@ -478,8 +477,8 @@ function SPAM_POST(BotComment) {
 
 //投稿
 function POST_MAIN(BotComment) {
-  //終了していたら帰る
-  if (breaked) { return; }
+  //動作中でなければ処理をしない。
+  if (!bot_running) { return; }
   BotComment = API_POST_ARRANGE(BotComment);
   $.ajax({
     url: Target,
@@ -503,7 +502,7 @@ function Destroy() {
   bot_ui_ctrl.textContent = 'BotStart';
   bot_ui_ctrl.style.color = "#000000";
   bot_ui_ctrl.onclick = BOT_CREATE;
-  breaked = true;
+  bot_running = false;
   console.log('Bot was destroyed');
 }
 //SPAM 終了
