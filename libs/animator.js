@@ -153,10 +153,15 @@ function ANIMATOR_FRAME_PROCESS() {
 
   let type = typeof fdata;
   if (type == 'function') {
-    API_EDIT_FEED(anime_target_id, fdata(anime_now_frame));
-  } else if(type == 'object'){
+    let freturn = fdata(anime_now_frame);
+    if (typeof freturn == "object") {
+      API_EDIT_FEED(anime_target_id, freturn[0], freturn[1]);
+    } else {
+      API_EDIT_FEED(anime_target_id, freturn);
+    }
+  } else if (type == 'object') {
     API_EDIT_FEED(anime_target_id, fdata[0], fdata[1]);
-  }else {
+  } else {
     API_EDIT_FEED(anime_target_id, fdata);
   }
   anime_now_frame++;
