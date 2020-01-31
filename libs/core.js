@@ -239,6 +239,8 @@ function BOT_INIT() {
   counter = CounterStart;
   bot_running = true;
 
+  if (BotName == "") { BotName = "NoName"; }
+
   //Create Stop Botton
   var ctrl = document.getElementById('FBOT_CTRL');
   //fix

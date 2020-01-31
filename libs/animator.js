@@ -99,7 +99,7 @@ function ANIMATOR_JS_TOGGLE_RUN() {
     try {
       eval($(animator_js_ui_conf).val());
     } catch (e) {
-      alert("boot config error [animator]! : \n" + e);
+      alert("animator error! : \n" + e);
       return;
     }
 
@@ -145,11 +145,20 @@ function ANIMATOR_FRAME_PROCESS() {
   if (anime_now_frame == anime_frames.length) {
     anime_now_frame = 0;
   }
-  if(anime_frames[anime_now_frame] == undefined || anime_frames[anime_now_frame] == null || anime_frames[anime_now_frame] == ""){
+  var fdata = anime_frames[anime_now_frame];
+  if (fdata == undefined || fdata == null || fdata == "") {
     anime_now_frame++;
     return;
   }
-  API_EDIT_FEED(anime_target_id, anime_frames[anime_now_frame]);
+
+  let type = typeof fdata;
+  if (type == 'function') {
+    API_EDIT_FEED(anime_target_id, fdata(anime_now_frame));
+  } else if(type == 'object'){
+    API_EDIT_FEED(anime_target_id, fdata[0], fdata[1]);
+  }else {
+    API_EDIT_FEED(anime_target_id, fdata);
+  }
   anime_now_frame++;
 }
 
