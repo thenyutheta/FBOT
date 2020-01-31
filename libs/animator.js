@@ -153,11 +153,15 @@ function ANIMATOR_FRAME_PROCESS() {
 
   let type = typeof fdata;
   if (type == 'function') {
-    let freturn = fdata(anime_now_frame);
-    if (typeof freturn == "object") {
-      API_EDIT_FEED(anime_target_id, freturn[0], freturn[1]);
-    } else {
-      API_EDIT_FEED(anime_target_id, freturn);
+    try {
+      let freturn = fdata(anime_now_frame);
+      if (typeof freturn == "object") {
+        API_EDIT_FEED(anime_target_id, freturn[0], freturn[1]);
+      } else {
+        API_EDIT_FEED(anime_target_id, freturn);
+      }
+    } catch (e) {
+      API_EDIT_FEED(anime_target_id, "[Error]Function frame error!\n" + e + "\nInternal frame count : " + anime_now_frame);
     }
   } else if (type == 'object') {
     API_EDIT_FEED(anime_target_id, fdata[0], fdata[1]);
