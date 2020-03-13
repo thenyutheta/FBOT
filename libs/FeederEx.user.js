@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         FeederEx
 // @namespace    https://www2.x-feeder.info/
-// @version      0.62
+// @version      0.63
 // @updateURL    https://thenyutheta.github.io/FBOT/libs/FeederEx.user.js
 // @downloadURL  https://thenyutheta.github.io/FBOT/libs/FeederEx.user.js
 // @description  Feeder mods pack
@@ -10,6 +10,7 @@
 // @match        http*://www2.x-feeder.info/*
 // @exclude      http*://www1.x-feeder.info/*/settings/*
 // @exclude      http*://www2.x-feeder.info/*/settings/*
+// @exclude      http*://www2.x-feeder.info/*.php
 // @run-at       document-end
 // @grant        GM_setValue
 // @grant        GM_getValue
@@ -17,7 +18,7 @@
 
 (function () {
     'use strict';
-    let version = "0.62";
+    let version = "0.63";
     //gm_div
     let gm_C = document.getElementById("GM_CONTENTS");
     if (gm_C == null) {
